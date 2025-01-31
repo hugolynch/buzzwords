@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buzzwords</title>
+    <img src="logo.svg">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game">
+        <div class="score-display">
+            <div>Score: <span id="totalScore">0</span> / <span id="maxScore">0</span></div>
+            <div>Words Found: <span id="foundCount">0</span>/<span id="totalWords">0</span></div>
+        </div>
+        <dialog id="messageDialog">
+                <div id="dialogContent"></div>
+        </dialog>
+        <div id="wordInput" contenteditable="true"></div>
+        <div id="letters"></div>
+        <div id="controls">
+            <button class="control" onclick="removeLastLetter()"><img src="back.svg"></button>
+            <button class="control" onclick="shuffleLetters()"><img src="shuffle.svg"></button>
+            <button class="control" onclick="submitWord()"><img src="enter.svg"></button>
+        </div>
+        <h3>Found Words:</h3>
+        <div id="foundWords"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+        

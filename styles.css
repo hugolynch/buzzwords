@@ -1,0 +1,132 @@
+.letter {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid #C9CAD6;
+    text-align: center;
+    line-height: 48px;
+    margin: 5px;
+    font-weight: bold;
+    user-select: none;
+}
+
+.required {
+    background: #F9F2E7;
+    border: 1px solid #DDA846;
+}
+
+#game {
+    text-align: center;
+    margin: 20px;
+}
+
+input {
+    font-size: 16px;
+    padding: 5px;
+    margin: 10px;
+}
+
+button {
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#foundWords {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    min-height: 100px;
+    text-transform: uppercase;
+}
+
+.score-display {
+    margin: 24px;
+    font-size: 16px;
+    color: #666;
+    line-height: 24px;
+}
+
+.word-entry {
+    margin: 2px 0;
+}
+
+.letter {
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.letter:hover {
+    transform: scale(1.1);
+}
+
+#wordInput {
+    width: 400px;
+    margin-bottom: 10px;
+}
+
+#controls {
+    font-size: 0;
+    margin: 24px;
+
+    &div {
+        background-color: red;
+    }
+
+}
+
+.control {
+    cursor: pointer;
+    transition: transform 0.1s;
+    border: 1px solid C9CAD6;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid #C9CAD6;
+    text-align: center;
+    margin: 5px;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    & img {
+        width: 12px;
+    }
+}
+
+#wordInput {
+    border: none;
+    font-size: 24px;
+    padding: 72px 24px 24px 24px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-align: center;
+    margin: 10px auto;
+    white-space: nowrap;
+    overflow-x: auto;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.invalid-letter {
+    color: #C9CAD6;
+}
+
+#messageDialog {
+    border-radius: 12px;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #C9CAD6;
+}
+
+#dialogContent {
+    font-size: 16px;
+    color: #333;
+}
+
