@@ -5,6 +5,8 @@ let requiredLetter = '';
 let totalScore = 0;
 let totalMaxScore = 0;
 
+let puzzleLength = 7
+
 async function loadWordList() {
     const response = await fetch('scrabble.txt');
     const text = await response.text();
@@ -30,7 +32,7 @@ function loadGameState() {
 function getPangrams(wordList) {
     return wordList.filter(word => {
         const unique = new Set(word.split(''));
-        return unique.size === 7;
+        return unique.size === puzzleLength;
     });
 }
 
@@ -69,8 +71,8 @@ function calculateScore(word) {
     let score = word.length === 4 ? 1 : word.length;
     
     const uniqueLetters = new Set(word.split(''));
-    if (uniqueLetters.size === 7) {
-        score += 7;
+    if (uniqueLetters.size === puzzleLength) {
+        score += puzzleLength;
     }
     
     return score;
@@ -138,7 +140,7 @@ function submitWord() {
 function displayPangrams() {
     const pangrams = validWords.filter(word => {
         const uniqueLetters = new Set(word.split(''));
-        return uniqueLetters.size === 7;
+        return uniqueLetters.size === puzzleLength;
     });
     console.log('Puzzle Pangrams:', pangrams);
     return pangrams;
