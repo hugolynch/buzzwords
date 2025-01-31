@@ -10,16 +10,36 @@
     margin: 5px;
     font-weight: bold;
     user-select: none;
+    cursor: pointer;
+    transition: transform 0.1s;
+
+    &:hover {
+        transform: scale(1.1);
+        background-color: #F2F3FB;
+    }
 }
 
 .required {
     background: #F9F2E7;
     border: 1px solid #DDA846;
+
+    &:hover {
+        background-color: #F3E1C5;
+    }
+}
+
+.required:hover {
+    background-color: #F3E1C5;
+}
+
+body {
+    padding: 0;
+    margin: 0;
 }
 
 #game {
     text-align: center;
-    margin: 20px;
+    margin-top: 96px;
 }
 
 input {
@@ -35,31 +55,34 @@ button {
 }
 
 #foundWords {
-    margin: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 12px;
     min-height: 100px;
     text-transform: uppercase;
+}
+
+#words {
+    background-color: #F2F3FB;
+    padding: 24px 0 48px 0;
 }
 
 .score-display {
     margin: 24px;
     font-size: 16px;
-    color: #666;
     line-height: 24px;
+
+    & div {
+        padding: 8px;
+        margin: 4px;
+        display: inline;
+        border-radius: 12px;
+        border: 1px solid #C9CAD6;
+    }
 }
 
 .word-entry {
     margin: 2px 0;
-}
-
-.letter {
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-
-.letter:hover {
-    transform: scale(1.1);
+    font-size: 12px;
+    font-family: monospace;
 }
 
 #wordInput {
@@ -70,11 +93,6 @@ button {
 #controls {
     font-size: 0;
     margin: 24px;
-
-    &div {
-        background-color: red;
-    }
-
 }
 
 .control {
@@ -120,22 +138,38 @@ button {
 
 #messageDialog {
     border-radius: 12px;
-    padding: 8px;
+    padding: 12px 18px;
     text-align: center;
-    border: 1px solid #C9CAD6;
-}
-
-#dialogContent {
+    border: none;
+    color: #9EA0AB;
+    background-color: #F2F3FB;
     font-size: 16px;
-    color: #333;
+
 }
 
 #newGame {
     position: fixed;
-    top: 72px;
-    left: 20px;
+    bottom: 0;
     padding: 12px 24px;
-    background: #F9F2E7;
-    border: 1px solid #DDA846;
-    border-radius: 12px;
+    /* border: 1px solid #C9CAD6; */
+    /* border-radius: 12px; */
+    border: none;
+    background-color: #13141C;
+    color: #F2F3FB;
+    width: 100%;
+
+    &:hover {
+        background-color: #2E2F38;
+    }
+}
+
+.icons {
+    width: 12px;
+    padding-right: 4px;
+}
+
+#logo {
+    position: fixed;
+    left: 24px;
+    top: 24px;
 }

@@ -101,17 +101,17 @@ function submitWord() {
     
     const invalidLetters = [...word].filter(c => !puzzleLetters.includes(c));
     if (invalidLetters.length > 0) {
-        showDialog('Contains invalid letters!');
+        showDialog('Invalid letters');
         return;
     }
 
     if (word.length < 4) {
-        showDialog('Words must be at least 4 letters long!');
+        showDialog('Too short');
         return;
     }
     
     if (foundWords.has(word)) {
-        showDialog('You already found this word!');
+        showDialog('Already found');
         return;
     }
 
@@ -131,7 +131,7 @@ function submitWord() {
         saveGameState();
 
     } else {
-        showDialog('Not a valid word!');
+        showDialog('Invalid word');
     }
 }
 

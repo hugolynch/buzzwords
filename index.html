@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <img src="logo.svg">
+    <img id="logo" src="logo.svg">
     <button id="newGame" onclick="if(confirm('Start new game? Progress will be lost!')) newGame()">New Game</button>
     <div id="game">
         <div class="score-display">
-            <div>Score: <span id="totalScore">0</span> / <span id="maxScore">0</span></div>
-            <div>Words Found: <span id="foundCount">0</span>/<span id="totalWords">0</span></div>
+            <div><img class="icons" src="score.svg"><span id="totalScore">0</span>&#8201;/&#8201;<span id="maxScore">0</span></div>
+            <div><img class="icons" src="words.svg"><span id="foundCount">0</span>&#8201;/&#8201;<span id="totalWords">0</span></div>
+            <div><img class="icons" src="time.svg"><span id="timer">00:00</span></div>
         </div>
         <dialog id="messageDialog">
                 <div id="dialogContent"></div>
@@ -25,8 +26,10 @@
             <button class="control" onclick="shuffleLetters()"><img src="shuffle.svg"></button>
             <button class="control" onclick="submitWord()"><img src="enter.svg"></button>
         </div>
-        <h3>Found Words:</h3>
-        <div id="foundWords"></div>
+        <div id="words">
+            <img class="icons" src="words.svg">
+            <div id="foundWords"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
