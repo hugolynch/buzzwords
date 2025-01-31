@@ -130,3 +130,12 @@ button {
     color: #333;
 }
 
+#newGame {
+    position: fixed;
+    top: 72px;
+    left: 20px;
+    padding: 12px 24px;
+    background: #F9F2E7;
+    border: 1px solid #DDA846;
+    border-radius: 12px;
+}

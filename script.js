@@ -11,6 +11,37 @@ async function loadWordList() {
     return text.toLowerCase().split('\n').map(word => word.trim()).filter(word => word.length >= 4);
 }
 
+function saveGameState() {
+    const gameState = {
+        foundWords: Array.from(foundWords),
+        puzzleLetters,
+        requiredLetter,
+        totalScore,
+        totalMaxScore: validWords.reduce((sum, word) => sum + calculateScore(word), 0)
+    };
+    localStorage.setItem('buzzwordsSave', JSON.stringify(gameState));
+}
+
+function loadGameState(wordList) {
+    const saved = localStorage.getItem('buzzwordsSave');
+    if (!saved) return null;
+
+    const parsed = JSON.parse(saved);
+    
+    foundWords = new Set(parsed.foundWords);
+    puzzleLetters = parsed.puzzleLetters;
+    requiredLetter = parsed.requiredLetter;
+    totalScore = parsed.totalScore;
+    
+    validWords = wordList.filter(word => {
+        const lowerWord = word.toLowerCase();
+        return lowerWord.includes(requiredLetter) && 
+            [...lowerWord].every(c => puzzleLetters.includes(c));
+    });
+
+    return parsed;
+}
+
 function getPangrams(wordList) {
     return wordList.filter(word => {
         const unique = new Set(word.split(''));
@@ -108,9 +139,12 @@ function submitWord() {
         foundDiv.innerHTML = Array.from(foundWords).map(w => 
             `<div class="word-entry">${w} (${calculateScore(w)})</div>`
         ).sort().join('');
-        
+
+        document.getElementById('wordInput').innerHTML = "";
         updateScoreDisplay();
         updateWordCounts();
+        saveGameState();
+
     } else {
         showDialog('Not a valid word!');
     }
@@ -197,21 +231,45 @@ function setInputText(input, text) {
 }
 
 async function initializeGame() {
+
+    if (window.gameInitialized) {
+        window.location.reload();
+        return;
+    }
+    window.gameInitialized = true;
+
     const wordList = await loadWordList();
-    generatePuzzle(wordList);
-    shuffleLetters();
-    displayLetters();
-    console.log('Valid words:', validWords);
+    const savedData = loadGameState(wordList);
+    
+    if (!savedData) {
+        generatePuzzle(wordList);
+        shuffleLetters();
+        console.log("new puzzle");
+    } else {
+        console.log("saved puzzle")
+    }
     
     totalMaxScore = validWords.reduce((sum, word) => sum + calculateScore(word), 0);
+
+    displayLetters();
     updateScoreDisplay();
     updateWordCounts();
     displayPangrams();
+    console.log('Valid words:', validWords);
 
-    document.getElementById('dialogClose').addEventListener('click', () => {
-        document.getElementById('messageDialog').style.display = 'none';
-    });
+    const foundDiv = document.getElementById('foundWords');
+    foundDiv.innerHTML = Array.from(foundWords).map(w => 
+        `<div class="word-entry">${w} (${calculateScore(w)})</div>`
+    ).sort().join('');
+
+    window.addEventListener('beforeunload', saveGameState);
 }
 
+function newGame() {
+    localStorage.removeItem('buzzwordsSave');
+    foundWords.clear();
+    totalScore = 0;
+    window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now();
+}
 
 initializeGame();
