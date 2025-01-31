@@ -22,24 +22,9 @@ function saveGameState() {
     localStorage.setItem('buzzwordsSave', JSON.stringify(gameState));
 }
 
-function loadGameState(wordList) {
+function loadGameState() {
     const saved = localStorage.getItem('buzzwordsSave');
-    if (!saved) return null;
-
-    const parsed = JSON.parse(saved);
-    
-    foundWords = new Set(parsed.foundWords);
-    puzzleLetters = parsed.puzzleLetters;
-    requiredLetter = parsed.requiredLetter;
-    totalScore = parsed.totalScore;
-    
-    validWords = wordList.filter(word => {
-        const lowerWord = word.toLowerCase();
-        return lowerWord.includes(requiredLetter) && 
-            [...lowerWord].every(c => puzzleLetters.includes(c));
-    });
-
-    return parsed;
+    return saved ? JSON.parse(saved) : null;
 }
 
 function getPangrams(wordList) {
@@ -231,38 +216,44 @@ function setInputText(input, text) {
 }
 
 async function initializeGame() {
-
-    if (window.gameInitialized) {
-        window.location.reload();
-        return;
-    }
-    window.gameInitialized = true;
-
     const wordList = await loadWordList();
     const savedData = loadGameState(wordList);
-    
+
     if (!savedData) {
+        // New game path
         generatePuzzle(wordList);
         shuffleLetters();
-        console.log("new puzzle");
+        totalMaxScore = validWords.reduce((sum, word) => sum + calculateScore(word), 0);
+        console.log("Initialized new game");
     } else {
-        console.log("saved puzzle")
+        // Saved game path
+        puzzleLetters = savedData.puzzleLetters;
+        requiredLetter = savedData.requiredLetter;
+        foundWords = new Set(savedData.foundWords);
+        totalScore = savedData.totalScore;
+        
+        // Regenerate validWords from current dictionary
+        validWords = wordList.filter(word => {
+            const lowerWord = word.toLowerCase();
+            return lowerWord.includes(requiredLetter) && 
+                [...lowerWord].every(c => puzzleLetters.includes(c));
+        });
+        
+        totalMaxScore = validWords.reduce((sum, word) => sum + calculateScore(word), 0);
+        console.log("Loaded saved game");
     }
-    
-    totalMaxScore = validWords.reduce((sum, word) => sum + calculateScore(word), 0);
 
+    // Common initialization
     displayLetters();
     updateScoreDisplay();
     updateWordCounts();
     displayPangrams();
     console.log('Valid words:', validWords);
 
-    const foundDiv = document.getElementById('foundWords');
-    foundDiv.innerHTML = Array.from(foundWords).map(w => 
-        `<div class="word-entry">${w} (${calculateScore(w)})</div>`
-    ).sort().join('');
-
-    window.addEventListener('beforeunload', saveGameState);
+    document.getElementById('foundWords').innerHTML = 
+        Array.from(foundWords).map(w => 
+            `<div class="word-entry">${w} (${calculateScore(w)})</div>`
+        ).sort().join('');
 }
 
 function newGame() {
