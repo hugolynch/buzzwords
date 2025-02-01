@@ -154,6 +154,7 @@ function shuffleLetters() {
     }
     puzzleLetters = shuffled;
     displayLetters();
+    saveGameState();
 }
 
 function handleKeyPress(event) {
@@ -221,12 +222,14 @@ async function initializeGame() {
     const wordList = await loadWordList();
     const savedData = loadGameState(wordList);
 
+    console.log("START");
     if (!savedData) {
         // New game path
         generatePuzzle(wordList);
         shuffleLetters();
         totalMaxScore = validWords.reduce((sum, word) => sum + calculateScore(word), 0);
         console.log("Initialized new game");
+        saveGameState();
     } else {
         // Saved game path
         puzzleLetters = savedData.puzzleLetters;
@@ -262,7 +265,7 @@ function newGame() {
     localStorage.removeItem('buzzwordsSave');
     foundWords.clear();
     totalScore = 0;
-    window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now();
+    window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now(); //Cache Busting
 }
 
 initializeGame();
