@@ -98,12 +98,18 @@ function showDialog(message) {
 function submitWord() {
     const input = document.getElementById('wordInput');
     const word = input.textContent.toLowerCase();
+
+    // function shake() {
+    //     var element = document.getElementById("wordInout");
+    //     element.classList.add("shake");
+    // }
     
     if (!word) return;
     
     const invalidLetters = [...word].filter(c => !puzzleLetters.includes(c));
     if (invalidLetters.length > 0) {
         showDialog('Invalid letters');
+        // shake();
         return;
     }
 
@@ -126,6 +132,8 @@ function submitWord() {
         foundDiv.innerHTML = Array.from(foundWords).map(w => 
             `<div class="word-entry">${w} (${calculateScore(w)})</div>`
         ).sort().join('');
+
+        showDialog(wordScore);
 
         document.getElementById('wordInput').innerHTML = "";
         updateScoreDisplay();
@@ -265,7 +273,8 @@ function newGame() {
     localStorage.removeItem('buzzwordsSave');
     foundWords.clear();
     totalScore = 0;
-    window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now(); //Cache Busting
+    window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now(); //Cache 
+    // Busting
 }
 
 initializeGame();

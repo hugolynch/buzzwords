@@ -9,7 +9,8 @@
 </head>
 <body>
     <img id="logo" src="logo.svg">
-    <button id="newGame" onclick="if(confirm('Start new game? Progress will be lost!')) newGame()">New Game</button>
+    <button class="control" id="menu" onclick="if(confirm('Start new game? Progress will be lost!')) newGame()"><img src="new.svg"></button>
+
     <div id="game">
         <div class="score-display">
             <div><img class="icons" src="score.svg"><span id="totalScore">0</span>&#8201;/&#8201;<span id="maxScore">0</span></div>
