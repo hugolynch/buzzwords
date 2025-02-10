@@ -355,5 +355,67 @@ function newGame() {
     window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now(); // Reload the page to reset game state and bust cache
 }
 
+// Function to start a new puzzle with a custom word list
+function newPuzzleCustomList() {
+    const customWordListText = prompt("Enter your custom word list, separated by commas:");
+    if (customWordListText) {
+        const customWordList = customWordListText.toLowerCase().split(',').map(word => word.trim()).filter(word => word.length >= 4);
+
+        if (customWordList.length === 0) {
+            alert("Invalid word list. Please enter at least one word of length 4 or more.");
+            return;
+        }
+
+        // Generate puzzle letters from the custom word list
+        const allLetters = new Set();
+        customWordList.forEach(word => {
+            for (const letter of word) {
+                allLetters.add(letter);
+            }
+        });
+
+        if (allLetters.size < 4 || allLetters.size > 9) {
+            alert("The custom word list must contain between 4 and 9 unique letters.");
+            return;
+        }
+
+        puzzleLetters = Array.from(allLetters);
+        puzzleLength = puzzleLetters.length;
+        requiredLetter = puzzleLetters[Math.floor(Math.random() * puzzleLetters.length)];
+
+        // Filter valid words based on the generated puzzle letters
+        validWords = customWordList.filter(word => {
+            return word.includes(requiredLetter) && [...word].every(c => puzzleLetters.includes(c));
+        });
+
+        if (validWords.length === 0) {
+            alert("No valid words could be formed with the given word list and required letter.");
+            return;
+        }
+
+        gameStateManager.clearGameState();
+        foundWords.clear();
+        totalScore = 0;
+        totalMaxScore = validWords.reduce((sum, word) => sum + calculateScore(word), 0);
+
+        displayLetters();
+        updateScoreDisplay();
+        updateWordCounts();
+        displayPangrams();
+
+        gameStateManager.saveGameState({
+            foundWords: Array.from(foundWords),
+            puzzleLetters,
+            requiredLetter,
+            totalScore,
+            totalMaxScore
+        });
+    } else {
+        alert("Custom word list creation cancelled.");
+    }
+    window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now(); // Reload the page to reset game state and bust cache
+
+}
+
 // Initialize the game when the script loads
 initializeGame();

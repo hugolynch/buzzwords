@@ -118,6 +118,26 @@ button {
 
 }
 
+#customList {
+    display: block;
+    margin-left: 24px;
+    border: 1px solid #DDA846;
+    background-color: #F9F2E7;
+    position: fixed;
+    top: 152px;
+
+    & img {
+        height: 16px;
+        width: 16px;
+        display: block;
+        margin-top: -2px;
+    }
+    &:hover {
+        background-color: #F3E1C5;
+    }
+
+}
+
 .control {
     cursor: pointer;
     transition: transform 0.1s;
