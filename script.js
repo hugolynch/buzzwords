@@ -5,7 +5,9 @@ let requiredLetter = '';
 let totalScore = 0;
 let totalMaxScore = 0;
 
-let puzzleLength = 7
+// Initialize puzzleLength from localStorage or default to 7
+let puzzleLength = localStorage.getItem('puzzleLength') ? 
+    parseInt(localStorage.getItem('puzzleLength')) : 7;
 
 async function loadWordList() {
     const response = await fetch('scrabble.txt');
@@ -270,11 +272,28 @@ async function initializeGame() {
 }
 
 function newGame() {
+    const newLength = prompt("Enter puzzle length (4-9), or leave empty for default (7):");
+    if (newLength) {
+        const length = parseInt(newLength);
+        if (length >= 4 && length <= 9) {
+            puzzleLength = length;
+            localStorage.setItem('puzzleLength', length);
+            console.log("New puzzle length:", puzzleLength);
+        } else {
+            alert("Invalid length. Using default length of 7.");
+            puzzleLength = 7;
+            localStorage.setItem('puzzleLength', 7);
+            console.log("New puzzle length: 7");
+        }
+    } else {
+        puzzleLength = 7;
+        localStorage.setItem('puzzleLength', 7);
+        console.log("New puzzle length: 7");
+    }
     localStorage.removeItem('buzzwordsSave');
     foundWords.clear();
     totalScore = 0;
-    window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now(); //Cache 
-    // Busting
+    window.location.href = window.location.href.split('?')[0] + '?nocache=' + Date.now(); //Cache busting
 }
 
 initializeGame();
