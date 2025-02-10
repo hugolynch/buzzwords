@@ -9,8 +9,8 @@
 </head>
 <body>
     <img id="logo" src="logo.svg">
-    <button class="control" id="menu" onclick="if(confirm('Start new game? Progress will be lost!')) newGame()"><img src="new.svg"></button>
-    <button class="control" id="customList" onclick="newPuzzleCustomList()"><img src="new.svg"></button>
+    <div class="button-container"><button class="control" id="menu" onclick="if(confirm('Start new game? Progress will be lost!')) newGame()"><img src="new.svg"></button><div class="tooltip" id="menu1">New Game</div></div>
+    <div class="button-container"><button class="control" id="customList" onclick="newPuzzleCustomList()"><img src="custom.svg"></button><div class="tooltip" id="menu2">Custom List</div></div>
 
     <div id="game">
         <div class="score-display">
