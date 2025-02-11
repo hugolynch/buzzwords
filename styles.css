@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;700&display=swap');
+
+
 /* Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) */
 
 html, body, div, span, applet, object, iframe,
@@ -61,9 +64,6 @@ table {
 }
 
 /* Fonts */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;700&display=swap');
-
 html {
     font-family: 'Inter', -apple-system, system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 62.5%;
@@ -140,7 +140,15 @@ button, .gradient {
 
         &>div {
             background: #F9F2E7;
-            color: #A15D17;
+            color: #916600;
+        }
+    }
+
+    &:hover {
+        &>div {
+            &>div {
+                background: #F3E1C5;
+            }
         }
     }
 }
@@ -248,18 +256,18 @@ button, .gradient {
 
 #foundWords {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
 }
 
 .word-entry {
     justify-content: center;
     text-align: center;
+    padding: 2px;
 }
 
 #scoreDisplay {
     display: flex;
     justify-content: center;
-    margin: 32px;
     gap: 24px;
 
     &>div {
