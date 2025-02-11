@@ -8,27 +8,93 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <img id="logo" src="logo.svg">
-    <div class="button-container"><button class="control" id="menu" onclick="if(confirm('Start new game? Progress will be lost!')) newGame()"><img src="new.svg"></button><div class="tooltip" id="menu1">New Game</div></div>
-    <div class="button-container"><button class="control" id="customList" onclick="newPuzzleCustomList()"><img src="custom.svg"></button><div class="tooltip" id="menu2">Custom List</div></div>
+    <nav>
+        <div class="row">
+            <button>
+                <div>
+                    <div><img src="img/back.svg"></div>
+                </div>
+            </button>
+            <div class="gradient title"" >
+                <div>
+                    <div class="name">Buzzwords</div>
+                </div>
+            </div>
+            <div class="spacer"></div>
+            <button>
+                <div>
+                    <div><img src="img/user.svg"><span>Hugo Lynch</span><img src="img/dropdown.svg"></div>
+                </div>
+            </button>
+        </div>
 
+        <div class="row">
+            <button>
+                <div>
+                    <div><img src="img/puzzle.svg"><span>Daily Puzzle</span><img src="img/dropdown.svg"></div>
+                </div>
+            </button>
+
+            <button>
+                <div>
+                    <div><img src="img/date.svg"><span>February 11, 2025</span><img src="img/dropdown.svg"></div>
+                </div>
+            </button>
+        </div>
+        <div class="row">
+            <button class="accent">
+                <div>
+                    <div onclick="if(confirm('Start new game? Progress will be lost!')) newGame()">New Game</div>
+                </div>
+            </button>
+
+            <button>
+                <div>
+                    <div onclick="newPuzzleCustomList()">Custom Letters</div>
+                </div>
+            </button>
+        </div>
+    </nav>
     <div id="game">
-        <div class="score-display">
-            <div><img class="icons" src="score.svg"><span id="totalScore">0</span>&#8201;/&#8201;<span id="maxScore">0</span></div>
-            <div><img class="icons" src="words.svg"><span id="foundCount">0</span>&#8201;/&#8201;<span id="totalWords">0</span></div>
-            <div><img class="icons" src="time.svg"><span id="timer">00:00</span></div>
+        <div class="row" id="scoreDisplay">
+            <div><img src="img/star.svg"><span id="totalScore">0</span>&#8201;/&#8201;<span id="maxScore">0</span></div>
+            <div><img src="img/list.svg"><span id="foundCount">0</span>&#8201;/&#8201;<span id="totalWords">0</span></div>
+            <div><img src="img/timer.svg"><span id="timer">00:00</span></div>
         </div>
-        <dialog id="messageDialog">
-                <div id="dialogContent"></div>
-        </dialog>
-        <div id="wordInput" contenteditable="true"></div>
-        <div id="letters"></div>
-        <div id="controls">
-            <button class="control" onclick="removeLastLetter()"><img src="back.svg"></button>
-            <button class="control" onclick="shuffleLetters()"><img src="shuffle.svg"></button>
-            <button class="control" onclick="submitWord()"><img src="enter.svg"></button>
+
+        <div class="row" id="dialogs">
+            <div class="gradient" id="messageDialog">
+                <div>
+                    <div id="dialogContent"></div>
+                    
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div id="dialogScore"></div>
+                </div>
+            </div>
         </div>
-        <div id="words">
+        <div class="row" id="wordInput" contenteditable="true"></div>
+        <div class="row" id="letters"></div>
+        <div class="row" id="controls"">
+            <button>
+                <div>
+                    <div onclick="removeLastLetter()"><img src="img/backspace.svg"></div>
+                </div>
+            </button>
+            <button>
+                <div>
+                    <div onclick="shuffleLetters()"><img src="img/shuffle.svg"></div>
+                </div>
+            </button>
+            <button>
+                <div>
+                    <div onclick="submitWord()"><img src="img/submit.svg"></div>
+                </div>
+            </button>
+        </div>
+        <div class="row" id="words">
             <img class="icons" src="words.svg">
             <div id="foundWords"></div>
         </div>

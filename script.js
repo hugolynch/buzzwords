@@ -128,6 +128,15 @@ function showDialog(message) {
     }, 1000); // Delay for 1 second (1000 milliseconds)
 }
 
+function showDialogScore(message) {
+    const dialog = document.getElementById('messageDialogScore');
+    document.getElementById('dialogScore').textContent = message;
+    document.getElementById('dialogScore').style.display = 'block';
+
+    setTimeout(() => {
+        document.getElementById('dialogScore').style.display = 'none';
+    }, 990);
+}
 // Function to handle word submission
 function submitWord() {
     const input = document.getElementById('wordInput'); // Get the word input element
@@ -167,7 +176,8 @@ function submitWord() {
             `<div class="word-entry">${w} (${calculateScore(w)})</div>` // Format each word with its score
         ).sort().join(''); // Sort words alphabetically and join into a single HTML string
 
-        showDialog(wordScore); // Show dialog with the score for the found word
+        showDialog("Nice!"); // Show dialog with the score for the found word
+        showDialogScore(wordScore);
 
         document.getElementById('wordInput').innerHTML = ""; // Clear the word input
         updateScoreDisplay(); // Update the score display
