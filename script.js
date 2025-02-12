@@ -187,7 +187,8 @@ function submitWord() {
             puzzleLetters,
             requiredLetter,
             totalScore,
-            totalMaxScore
+            totalMaxScore,
+            validWords,
         });
 
     } else {
@@ -219,7 +220,8 @@ function shuffleLetters() {
         puzzleLetters,
         requiredLetter,
         totalScore,
-        totalMaxScore
+        totalMaxScore,
+        validWords,
     });
 }
 
@@ -311,6 +313,7 @@ async function initializeGame() {
             requiredLetter,
             totalScore,
             totalMaxScore,
+            validWords,
         });
     } else {
         // Saved game path
@@ -318,13 +321,7 @@ async function initializeGame() {
         requiredLetter = savedData.requiredLetter; // Restore required letter
         foundWords = new Set(savedData.foundWords); // Restore found words set
         totalScore = savedData.totalScore; // Restore total score
-
-        // Regenerate validWords from current dictionary (in case word list has been updated)
-        validWords = wordList.filter(word => {
-            const lowerWord = word.toLowerCase();
-            return lowerWord.includes(requiredLetter) &&
-                [...lowerWord].every(c => puzzleLetters.includes(c));
-        });
+        validWords = savedData.validWords;
 
         totalMaxScore = validWords.reduce((sum, word) => sum + calculateScore(word), 0); // Recalculate max score based on loaded puzzle
         console.log("Loaded saved game");
@@ -395,10 +392,8 @@ function newPuzzleCustomList() {
         puzzleLength = puzzleLetters.length;
         requiredLetter = puzzleLetters[Math.floor(Math.random() * puzzleLetters.length)];
 
-        // Filter valid words based on the generated puzzle letters
-        validWords = customWordList.filter(word => {
-            return word.includes(requiredLetter) && [...word].every(c => puzzleLetters.includes(c));
-        });
+        validWords = customWordList;
+        console.log("Valid words:", validWords);
 
         if (validWords.length === 0) {
             alert("No valid words could be formed with the given word list and required letter.");
@@ -420,7 +415,8 @@ function newPuzzleCustomList() {
             puzzleLetters,
             requiredLetter,
             totalScore,
-            totalMaxScore
+            totalMaxScore,
+            validWords,
         });
     } else {
         alert("Custom word list creation cancelled.");
