@@ -10,93 +10,44 @@
 <body>
     <nav>
         <div class="row">
-            <button>
-                <div>
-                    <div><img src="img/back.svg"></div>
-                </div>
-            </button>
-            <div class="gradient title"" >
-                <div>
-                    <div class="name">Buzzwords</div>
-                </div>
-            </div>
+            <button><img src="img/back.svg"></button>
+            <div class="title">Buzzwords</div>
             <div class="spacer"></div>
-            <button>
-                <div>
-                    <div><img src="img/user.svg"><span>Hugo Lynch</span><img src="img/dropdown.svg"></div>
-                </div>
-            </button>
+            <button><img src="img/account.svg"><span>Hugo Lynch</span><img src="img/dropdown.svg"></div></button>
         </div>
 
         <div class="row">
-            <button>
-                <div>
-                    <div><img src="img/puzzle.svg"><span>Daily Puzzle</span><img src="img/dropdown.svg"></div>
-                </div>
-            </button>
-
-            <button>
-                <div>
-                    <div><img src="img/date.svg"><span>February 11, 2025</span><img src="img/dropdown.svg"></div>
-                </div>
-            </button>
+            <button><img src="img/puzzle.svg"><span>Daily Puzzle</span><img src="img/dropdown.svg"></button>
+            <button><img src="img/date.svg"><span>February 11, 2025</span><img src="img/dropdown.svg"></div></button>
         </div>
-        <div class="row">
-            <button class="accent">
-                <div>
-                    <div onclick="if(confirm('Start new game? Progress will be lost!')) newGame()">New Game</div>
-                </div>
-            </button>
 
-            <button>
-                <div>
-                    <div onclick="newPuzzleCustomList()">Custom Letters</div>
-                </div>
-            </button>
+        <div class="row">
+            <button class="accent" onclick="if(confirm('Start new game? Progress will be lost!')) newGame()">New Game</button>
+            <button onclick="newPuzzleCustomList()">Custom Letters</button>
         </div>
     </nav>
     <div id="game">
-        <div class="row" id="scoreDisplay">
-            <div><img src="img/star.svg"><span id="totalScore">0</span>&#8201;/&#8201;<span id="maxScore">0</span></div>
-            <div><img src="img/list.svg"><span id="foundCount">0</span>&#8201;/&#8201;<span id="totalWords">0</span></div>
-            <!-- <div><img src="img/timer.svg"><span id="timer">00:00</span></div> -->
-        </div>
-
         <div class="row" id="dialogs">
-            <div class="gradient" id="messageDialog">
-                <div>
-                    <div id="dialogContent"></div>
-                    
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div id="dialogScore"></div>
-                </div>
+            <div id="messageDialog">
+                <div id="dialogContent"></div>
+                <div id="dialogScore"></div>
             </div>
         </div>
         <div class="row" id="wordInput" contenteditable="true"></div>
         <div class="row" id="letters"></div>
-        <div class="row" id="controls"">
-            <button>
-                <div>
-                    <div onclick="removeLastLetter()"><img src="img/backspace.svg"></div>
-                </div>
-            </button>
-            <button>
-                <div>
-                    <div onclick="shuffleLetters()"><img src="img/shuffle.svg"></div>
-                </div>
-            </button>
-            <button>
-                <div>
-                    <div onclick="submitWord()"><img src="img/submit.svg"></div>
-                </div>
-            </button>
+        <div class="row" id="controls">
+            <button onclick="removeLastLetter()"><img src="img/backspace.svg"></button>
+            <button onclick="shuffleLetters()"><img src="img/shuffle.svg"></button>
+            <button onclick="submitWord()"><img src="img/submit.svg"></button>
         </div>
-        <div class="row" id="words">
-            <img src="img/list.svg">
-            <div id="foundWords"></div>
+        
+    </div>
+    <div class="row" id="words">
+        <div class="score"><img src="img/list.svg"><span id="foundCount">0</span>&#8201;/&#8201;<span id="totalWords">0</span></div>
+        <div id="foundWords"></div>
+        <div class="score"><img src="img/star.svg"><span id="totalScore">0</span>&#8201;/&#8201;<span id="maxScore">0</span></div>
+        <div id="scoreBar-outer">
+            <div id="scoreBar-inner"></div>
         </div>
     </div>
 

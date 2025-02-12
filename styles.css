@@ -63,7 +63,6 @@ table {
     box-sizing: border-box;
 }
 
-/* Fonts */
 html {
     font-family: 'Inter', -apple-system, system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 62.5%;
@@ -74,11 +73,12 @@ html {
 }
 
 body {
-    font-size: 2.2rem;
-    margin: 8px;
+    font-size: 1.6rem;
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 96px;
 }
-
-/* Custom CSS */
 
 nav {
     display: flex;
@@ -96,60 +96,39 @@ nav {
     flex-grow: 1;
 }
 
-button, .gradient {
-    border-radius: 14px;
-    border: 1px solid white;
-    position: relative;
-    margin: -1px;
+button, .title {
+    border-radius: 6px;
+    border: 1px solid #C9CAD6;
+    background: white;
+    padding: 8px;
     cursor: pointer;
-    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
 
-    &>div {
-        background: linear-gradient(#F2F3FB, #C9CAD6);
-        border-radius: 13px;
-        height: 100%;
-        padding: 1px;
+    &:hover {
+        background-color: #F2F3FB;
+    }
 
-        &>div {
-            background: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            height: 44px;
-            padding: 0 10px;
+    &:active {
+        background-color: ;
+    }
 
-            &>span {
-                margin-left: 8px;
-            }
-
-            &:hover {
-                background-color: #F2F3FB;
-            }
-        } 
-
-        &>div.name {
-            padding: 0 16px;
-        }  
+    &>span {
+        margin: 0 2px 0 8px;
     }
 }
 
 .accent {
-
-    &>div {
-        background: linear-gradient(#F3E1C5, #DDA846);
-
-        &>div {
-            background: #F9F2E7;
-            color: #916600;
-        }
-    }
+    background-color: #F9F2E7;
+    color: #916600;
+    border: 1px solid #DDA846;
 
     &:hover {
-        &>div {
-            &>div {
-                background: #F3E1C5;
-            }
-        }
+        background-color: #F3E1C5;
+    }
+
+    &:active {
+        background-color: #E8C68E;
     }
 }
 
@@ -160,37 +139,48 @@ button, .gradient {
 #game {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin: 32px 0;
+    gap: 16px;
 }
 
 #dialogs {
     justify-content: center;  
-    height: 48px;  
-    display: flex;
-    flex-direction: row;
-    margin-top: 24px;
+    height: 32px;  
 }
 
 #messageDialog {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
     display: none;
 }
 
+#dialogContent {
+    border-radius: 6px;
+    border: 1px solid #E3E5EF;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+}
+
 #dialogScore {
-    display: none;
     color: #EF9E58;
     font-size: 1.6rem;
     font-weight: 600;
 }
 
 #wordInput {
+#wordInput {
     font-size: 4.4rem;
-    line-height: 9.6rem;
-    letter-spacing: 1rem;
     justify-content: center;    
     text-transform: uppercase;
+    padding-bottom: 32px;
     text-align: center;
     overflow-x: auto;
+    display: flex;
+    gap: 12px;
 
     &:focus {
         outline: none;
@@ -209,6 +199,7 @@ button, .gradient {
 .letter {
     display: inline-block;
     width: 48px;
+    height: 48px;
     border-radius: 12px;
     background: white;
     border: 1px solid #C9CAD6;
@@ -218,67 +209,105 @@ button, .gradient {
     user-select: none;
     cursor: pointer;
     transition: transform 0.1s;
+    padding: 0;
 
     &:hover {
         transform: scale(1.1);
         background-color: #F2F3FB;
     }
+
+    &:active {
+        transform: scale(0.9);
+        background-color: #E3E5EF;
+    }
+
 }
 
 .required {
-    background: #F9F2E7;
+    background-color: #F9F2E7;
     border: 1px solid #DDA846;
 
     &:hover {
         background-color: #F3E1C5;
     }
-}
 
-.required:hover {
-    background-color: #F3E1C5;
+    &:active {
+        transform: scale(0.9);
+        background-color: #E8C68E;
+    }
 }
 
 #controls {
     justify-content: center;
+
+    &>button {
+        display: flex;
+        justify-content: center;
+        user-select: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.1s;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+
+        &:active {
+            transform: scale(0.9);
+            background-color: #E3E5EF;
+        }
+
+        &>img {
+            height: 24px;
+            width: 24px;
+        }
+    }
 }
 
 #words {
     font-family: 'IBM Plex Mono', ui-monospace, monospace;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
-    margin-top: 32px;
-    padding: 16px 0;
     display: flex;
     flex-direction: column;
-    gap: 16px;
     border-radius: 12px;
-    background: #F2F3FB;
-
-    &>img {
-        width: 16px;
-        height: 16px;
-    }
-}
-
-#foundWords {
+    background: #FCFBF8;
+    padding: 16px;
     display: flex;
-    flex-direction: column; 
-}
-
-.word-entry {
-    justify-content: center;
-    text-align: center;
-    padding: 2px;
-}
-
-#scoreDisplay {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
+    align-items: center;
 
     &>div {
         display: flex;
         align-items: center;
-        gap: 2px;
+
+        &>img {
+            margin-right: 4px;
+        }
     }
+}
+
+.score {
+    font-weight: 600;
+}
+
+#foundWords {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0 24px 0;
+    row-gap: 8px;
+}
+
+#scoreBar-outer {
+    width: 100%;
+    height: 12px;
+    background-color: #F9F2E7;
+    border: 1px solid #DDA846;
+    border-radius: 2px;
+}
+
+#scoreBar-inner {
+    height: 10px;
+    background-color: #E8C68E;
 }

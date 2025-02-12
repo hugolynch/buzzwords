@@ -6,9 +6,9 @@ let requiredLetter = ''; // The required letter that must be in every valid word
 let totalScore = 0; // Player's current score
 let totalMaxScore = 0; // Maximum possible score for the current puzzle
 
-// Initialize puzzleLength from localStorage or default to 7
-let puzzleLength = localStorage.getItem('puzzleLength') ?
-    parseInt(localStorage.getItem('puzzleLength')) : 7;
+// Initialize puzzleLength from GameStateManager
+let puzzleLength = gameStateManager.loadPuzzleLength();
+
 
 // Function to load the word list from 'scrabble.txt'
 async function loadWordList() {
@@ -119,7 +119,7 @@ function updateScoreDisplay() {
 function showDialog(message) {
     const dialog = document.getElementById('messageDialog'); // Get the dialog element
     document.getElementById('dialogContent').textContent = message; // Set the dialog message
-    dialog.style.display = 'block'; // Show the dialog
+    dialog.style.display = 'flex'; // Show the dialog
 
     setTimeout(() => {
         dialog.style.display = 'none'; // Hide the dialog after a delay
@@ -130,7 +130,8 @@ function showDialog(message) {
 
 function showDialogScore(message) {
     const dialog = document.getElementById('messageDialogScore');
-    document.getElementById('dialogScore').textContent = message;
+    document.getElementById('dialogScore').textContent = "+";
+    document.getElementById('dialogScore').textContent += message;
     document.getElementById('dialogScore').style.display = 'block';
 
     setTimeout(() => {
@@ -174,10 +175,13 @@ function submitWord() {
         const foundDiv = document.getElementById('foundWords'); // Get the div to display found words
         foundDiv.innerHTML = Array.from(foundWords).map(w => // Map found words to HTML for display
             `<div class="word-entry">${w} (${calculateScore(w)})</div>` // Format each word with its score
-        ).sort().join(''); // Sort words alphabetically and join into a single HTML string
+        ).toReversed().join(',&nbsp'); // Join words into a single HTML string
 
         showDialog("Nice!"); // Show dialog with the score for the found word
         showDialogScore(wordScore);
+
+        document.getElementById('scoreBar-inner').style.width = (totalScore / totalMaxScore * 100) + "%";
+
 
         document.getElementById('wordInput').innerHTML = ""; // Clear the word input
         updateScoreDisplay(); // Update the score display
@@ -304,12 +308,13 @@ async function initializeGame() {
         shuffleLetters(); // Shuffle the puzzle letters
         totalMaxScore = validWords.reduce((sum, word) => sum + calculateScore(word), 0); // Calculate the maximum possible score
         console.log("Initialized new game");
+
         gameStateManager.saveGameState({ // Save the initial game state
             foundWords: Array.from(foundWords),
             puzzleLetters,
             requiredLetter,
             totalScore,
-            totalMaxScore
+            totalMaxScore,
         });
     } else {
         // Saved game path
@@ -336,10 +341,11 @@ async function initializeGame() {
     displayPangrams(); // Log pangrams to console (for debugging)
     console.log('Valid words:', validWords); // Log valid words to console (for debugging)
 
+    document.getElementById('scoreBar-inner').style.width = (totalScore / totalMaxScore * 100) + "%";
     document.getElementById('foundWords').innerHTML = // Display the list of found words
         Array.from(foundWords).map(w =>
             `<div class="word-entry">${w} (${calculateScore(w)})</div>` // Format each found word with its score
-        ).sort().join(''); // Sort found words alphabetically and join into HTML string
+        ).toReversed().join(',&nbsp'); // Sort found words alphabetically and join into HTML string
 }
 
 // Function to start a new game (triggered by user action)
