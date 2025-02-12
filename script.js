@@ -6,9 +6,9 @@ let requiredLetter = ''; // The required letter that must be in every valid word
 let totalScore = 0; // Player's current score
 let totalMaxScore = 0; // Maximum possible score for the current puzzle
 
-// Initialize puzzleLength from GameStateManager
-let puzzleLength = gameStateManager.loadPuzzleLength();
-
+// Initialize puzzleLength from localStorage or default to 7
+let puzzleLength = localStorage.getItem('puzzleLength') ?
+    parseInt(localStorage.getItem('puzzleLength')) : 7;
 
 // Function to load the word list from 'scrabble.txt'
 async function loadWordList() {
