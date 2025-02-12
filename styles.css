@@ -169,6 +169,7 @@ button, .gradient {
     height: 48px;  
     display: flex;
     flex-direction: row;
+    margin-top: 24px;
 }
 
 #messageDialog {
@@ -252,6 +253,11 @@ button, .gradient {
     gap: 16px;
     border-radius: 12px;
     background: #F2F3FB;
+
+    &>img {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 #foundWords {
