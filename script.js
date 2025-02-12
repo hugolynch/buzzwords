@@ -116,7 +116,7 @@ function updateScoreDisplay() {
 }
 
 // Function to show a dialog message temporarily
-function showDialog(message) {
+function showDialog(message, clear = true) {
     const dialog = document.getElementById('messageDialog'); // Get the dialog element
     document.getElementById('dialogContent').textContent = message; // Set the dialog message
     dialog.style.display = 'flex'; // Show the dialog
@@ -124,7 +124,9 @@ function showDialog(message) {
     setTimeout(() => {
         dialog.style.display = 'none'; // Hide the dialog after a delay
         const input = document.getElementById('wordInput') // Get the word input element
-        input.innerHTML = ''; // Clear the word input
+        if (clear) {
+            input.innerHTML = ''; // Clear the word input
+        }
     }, 1000); // Delay for 1 second (1000 milliseconds)
 }
 
@@ -142,11 +144,6 @@ function showDialogScore(message) {
 function submitWord() {
     const input = document.getElementById('wordInput'); // Get the word input element
     const word = input.textContent.toLowerCase(); // Get the entered word in lowercase
-
-    // function shake() {
-    //     var element = document.getElementById("wordInout");
-    //     element.classList.add("shake");
-    // }
 
     if (!word) return; // Do nothing if the input word is empty
 
@@ -174,14 +171,13 @@ function submitWord() {
 
         const foundDiv = document.getElementById('foundWords'); // Get the div to display found words
         foundDiv.innerHTML = Array.from(foundWords).map(w => // Map found words to HTML for display
-            `<div class="word-entry">${w} (${calculateScore(w)})</div>` // Format each word with its score
-        ).toReversed().join(',&nbsp'); // Join words into a single HTML string
+            `<span class="word-entry">${w}&nbsp;(${calculateScore(w)})</span>` // Format each word with its score
+        ).toReversed().join(', '); // Join words into a single HTML string
 
-        showDialog("Nice!"); // Show dialog with the score for the found word
+        showDialog("Nice!", false); // Show dialog with the score for the found word
         showDialogScore(wordScore);
 
         document.getElementById('scoreBar-inner').style.width = (totalScore / totalMaxScore * 100) + "%";
-
 
         document.getElementById('wordInput').innerHTML = ""; // Clear the word input
         updateScoreDisplay(); // Update the score display
@@ -344,8 +340,8 @@ async function initializeGame() {
     document.getElementById('scoreBar-inner').style.width = (totalScore / totalMaxScore * 100) + "%";
     document.getElementById('foundWords').innerHTML = // Display the list of found words
         Array.from(foundWords).map(w =>
-            `<div class="word-entry">${w} (${calculateScore(w)})</div>` // Format each found word with its score
-        ).toReversed().join(',&nbsp'); // Sort found words alphabetically and join into HTML string
+            `<span class="word-entry">${w}&nbsp;(${calculateScore(w)})</span>` // Format each found word with its score
+        ).toReversed().join(', '); // Sort found words alphabetically and join into HTML string
 }
 
 // Function to start a new game (triggered by user action)
