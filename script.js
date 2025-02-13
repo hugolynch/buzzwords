@@ -10,6 +10,15 @@ let totalMaxScore = 0; // Maximum possible score for the current puzzle
 let puzzleLength = localStorage.getItem('puzzleLength') ?
     parseInt(localStorage.getItem('puzzleLength')) : 7;
 
+document.addEventListener('keydown', (event) => {
+    const input = document.getElementById('wordInput');
+    if (event.key === 'Enter') {
+        submitWord();
+    } else if (!input.hasFocus()) {
+        input.focus();
+    }
+});
+
 // Function to load the word list from 'scrabble.txt'
 async function loadWordList() {
     const response = await fetch('scrabble.txt'); // Fetch the word list file
