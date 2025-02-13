@@ -14,7 +14,7 @@ document.addEventListener('keydown', (event) => {
     const input = document.getElementById('wordInput');
     if (event.key === 'Enter') {
         submitWord();
-    } else if (!input.hasFocus()) {
+    } else {
         input.focus();
     }
 });

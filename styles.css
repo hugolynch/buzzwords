@@ -110,7 +110,7 @@ button, .title {
     }
 
     &:active {
-        background-color: ;
+        background-color: #E3E5EF;
     }
 
     &>span {
