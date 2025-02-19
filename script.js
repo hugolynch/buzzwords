@@ -5,6 +5,7 @@ class GameState {
         this.foundWords = [];
         this.puzzleLetters = [];
         this.puzzleLength = [];
+        this.totalScore = 0;
         this.gameStateKey = 'gamestate';
     }
 
@@ -17,15 +18,20 @@ class GameState {
             this.foundWords = parsed.foundWords;
             this.puzzleLetters = parsed.puzzleLetters;
             this.puzzleLength = parsed.puzzleLength;
+            this.totalScore = parsed.totalScore;
         }
 
-        console.log('puzzle letters:', this.puzzleLetters);
-        console.log('required letter:', this.requiredLetter);
         console.log('buzzwords:', getPangrams(this.validWords, this.puzzleLength));
-        console.log(this.puzzleLength);
         console.log('valid words:', this.validWords);
         shuffleLetters()
         displayLetters();
+
+        document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
+        document.getElementById('totalScore').textContent = gameState.totalScore;
+        document.getElementById('maxScore').textContent = updateScoreDisplay();
+        document.getElementById('foundCount').textContent = gameState.foundWords.length;
+        document.getElementById('totalWords').textContent = gameState.validWords.length;
+        
         return saved;
     }
 
@@ -36,6 +42,7 @@ class GameState {
             foundWords: this.foundWords,
             puzzleLetters: this.puzzleLetters,
             puzzleLength: this.puzzleLength,
+            totalScore: this.totalScore,
         }));
     }
 
@@ -56,7 +63,6 @@ function load() {
 
 async function init() {
     localStorage.clear();
-    console.log('clear');
     const puzzleLength = getPuzzleLength();
     const response = await fetch('scrabble.txt');
     const text = await response.text();
@@ -80,6 +86,7 @@ async function init() {
     gameState.requiredLetter = requiredLetter;
     gameState.validWords = validWords;
     gameState.puzzleLetters = letters;
+    gameState.puzzleLength = puzzleLength;
     gameState.saveGameState();
 
     displayLetters();
@@ -189,11 +196,9 @@ function submitWord() {
     const word = input.textContent.toLowerCase();
     const maxScore = gameState.validWords.reduce((sum, word) => sum + calculateScore(word), 0);
     const score = gameState.foundWords.reduce((sum, word) => sum + calculateScore(word), 0);
-
-
+    const invalidLetters = [...word].filter(c => !gameState.puzzleLetters.includes(c));
     if (!word) return;
 
-    const invalidLetters = [...word].filter(c => !puzzleLetters.includes(c));
     if (invalidLetters.length > 0) {
         showDialog('Invalid letters');
         return;
@@ -204,33 +209,38 @@ function submitWord() {
         return;
     }
 
-    if (this.foundWords.has(word)) {
+    if (gameState.foundWords.includes(word)) {
         showDialog('Already found');
         return;
     }
 
-    if (this.validWords.includes(word)) {
-        const wordScore = calculateScore(word); // Calculate the score for the word
-        totalScore += wordScore; // Add score to total score
-        this.foundWords.add(word); // Add word to the set of found words
+    if (gameState.validWords.includes(word)) {
+        const wordScore = calculateScore(word);
+        gameState.totalScore += wordScore;
+        gameState.foundWords.push(word);
 
-        const foundDiv = document.getElementById('foundWords'); // Get the div to display found words
-        foundDiv.innerHTML = Array.from(this.foundWords).map(w => // Map found words to HTML for display
-            `<span class="word-entry">${w}&nbsp;(${calculateScore(w)})</span>` // Format each word with its score
-        ).toReversed().join(', '); // Join words into a single HTML string
+        const foundDiv = document.getElementById('foundWords');
+        foundDiv.innerHTML = Array.from(this.foundWords).map(w =>
+            `<span class="word-entry">${w}&nbsp;(${calculateScore(w)})</span>`
+        ).toReversed().join(', ');
 
-        showDialog("Nice!", false); // Show dialog with the score for the found word
+        showDialog("Nice!", false);
         showDialogScore(wordScore);
 
-        document.getElementById('scoreBar-inner').style.width = (totalScore / totalMaxScore * 100) + "%";
 
-        document.getElementById('wordInput').innerHTML = ""; // Clear the word input
-        updateScoreDisplay(); // Update the score display
-        updateWordCounts(); // Update the word counts display
-        saveGameState()
+        document.getElementById('wordInput').innerHTML = "";
+
+        document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
+        document.getElementById('totalScore').textContent = gameState.totalScore;
+        document.getElementById('maxScore').textContent = updateScoreDisplay();
+        document.getElementById('foundCount').textContent = gameState.foundWords.length;
+        document.getElementById('totalWords').textContent = gameState.validWords.length;
+        
+        gameState.saveGameState()
+        console.log(gameState.foundWords);
 
     } else {
-        showDialog('Invalid word'); // Show dialog for invalid word
+        showDialog('Invalid word');
     }
 }
 
@@ -240,9 +250,58 @@ function calculateScore(word) {
     let score = word.length === 4 ? 1 : word.length;
 
     const uniqueLetters = new Set(word.split(''));
-    if (uniqueLetters.size === puzzleLength) {
-        score += puzzleLength;
+    if (uniqueLetters.size === this.puzzleLength) {
+        score += this.puzzleLength;
     }
-
     return score;
 }
+
+function showDialog(message, clear = true) {
+    const dialog = document.getElementById('messageDialog');
+    document.getElementById('dialogContent').textContent = message;
+    dialog.style.display = 'flex';
+
+    setTimeout(() => {
+        dialog.style.display = 'none';
+        const input = document.getElementById('wordInput')
+        if (clear) {
+            input.innerHTML = '';
+        }
+    }, 1000);
+}
+
+function showDialogScore(message) {
+    const dialog = document.getElementById('messageDialogScore');
+    document.getElementById('dialogScore').textContent = "+";
+    document.getElementById('dialogScore').textContent += message;
+    document.getElementById('dialogScore').style.display = 'block';
+
+    setTimeout(() => {
+        document.getElementById('dialogScore').style.display = 'none';
+    }, 990);
+}
+
+function updateScoreDisplay() {
+    let totalMaxScore = 0;
+    for (const word of gameState.validWords) {
+        totalMaxScore += calculateScore(word);
+    }
+    return totalMaxScore;
+}
+
+const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+document.getElementById('date').textContent = `${months[new Date().getMonth()]} ${new Date().getDate()}, ${new Date().getFullYear()}`;
