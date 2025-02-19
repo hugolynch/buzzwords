@@ -23,8 +23,7 @@ class GameState {
 
         console.log('buzzwords:', getPangrams(this.validWords, this.puzzleLength));
         console.log('valid words:', this.validWords);
-        shuffleLetters()
-        displayLetters();
+        shuffleLetters();
 
         document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
         document.getElementById('totalScore').textContent = gameState.totalScore;
@@ -44,9 +43,6 @@ class GameState {
             puzzleLength: this.puzzleLength,
             totalScore: this.totalScore,
         }));
-    }
-
-    init() {
     }
 }
 
@@ -82,15 +78,12 @@ async function init() {
 
     const letters = [...new Set(buzzword.split(''))];
 
-    const gameState = new GameState();
     gameState.requiredLetter = requiredLetter;
     gameState.validWords = validWords;
     gameState.puzzleLetters = letters;
     gameState.puzzleLength = puzzleLength;
     gameState.saveGameState();
-
     displayLetters();
-    location.reload();
 }
 
 function getPuzzleLength() {
