@@ -31,7 +31,7 @@ class GameState {
         document.getElementById('maxScore').textContent = updateScoreDisplay();
         document.getElementById('foundCount').textContent = gameState.foundWords.length;
         document.getElementById('totalWords').textContent = gameState.validWords.length;
-        
+
         return saved;
     }
 
