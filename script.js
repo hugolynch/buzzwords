@@ -20,9 +20,6 @@ class GameState {
             this.puzzleLength = parsed.puzzleLength;
             this.totalScore = parsed.totalScore;
         }
-
-        console.log('buzzwords:', getPangrams(this.validWords, this.puzzleLength));
-        console.log('valid words:', this.validWords);
         shuffleLetters();
 
         document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
@@ -30,6 +27,11 @@ class GameState {
         document.getElementById('maxScore').textContent = updateScoreDisplay();
         document.getElementById('foundCount').textContent = gameState.foundWords.length;
         document.getElementById('totalWords').textContent = gameState.validWords.length;
+
+        const foundDiv = document.getElementById('foundWords');
+        foundDiv.innerHTML = Array.from(gameState.foundWords).map(w =>
+            `<span class="word-entry">${w}&nbsp;(${calculateScore(w)})</span>`
+        ).toReversed().join(', ');
 
         return saved;
     }
@@ -43,6 +45,9 @@ class GameState {
             puzzleLength: this.puzzleLength,
             totalScore: this.totalScore,
         }));
+        console.clear();
+        console.log('buzzwords:', getPangrams(this.validWords, this.puzzleLength));
+        console.log('valid words:', this.validWords);
     }
 }
 
@@ -51,13 +56,13 @@ function load() {
     currentGame = gameState.loadGameState();
 
     if (! currentGame) {
-        init();
+        init(gameState);
     } else {
         gameState.saveGameState();
     }
 }
 
-async function init() {
+async function init(gameState) {
     localStorage.clear();
     const puzzleLength = getPuzzleLength();
     const response = await fetch('scrabble.txt');
@@ -83,7 +88,7 @@ async function init() {
     gameState.puzzleLetters = letters;
     gameState.puzzleLength = puzzleLength;
     gameState.saveGameState();
-    displayLetters();
+    shuffleLetters();
 }
 
 function getPuzzleLength() {
@@ -100,7 +105,6 @@ function getPuzzleLength() {
     } else {
         puzzleLength = defaultLength;
     }
-    this.puzzleLetters = puzzleLength;
     return puzzleLength;
 }
 
@@ -124,7 +128,6 @@ function getPangrams(validWords, puzzleLength) {
 }
 
 load();
-
 
 function handleKeyPress(event) {
     if (event.key === 'Enter') {
@@ -150,10 +153,9 @@ function removeLastLetter() {
 document.getElementById('wordInput').addEventListener('keydown', handleKeyPress);
 
 document.getElementById('wordInput').addEventListener('input', function (e) {
-    const text = this.textContent.toLowerCase().replace(/[^a-z]/g, ""); 
-
-    setInputText(this, text);
-    placeCaretAtEnd(this);
+    const text = e.target.textContent.toLowerCase().replace(/[^a-z]/g, ""); 
+    setInputText(e.target, text);
+    placeCaretAtEnd(e.target);
 });
 
 function placeCaretAtEnd(el) {
@@ -213,7 +215,7 @@ function submitWord() {
         gameState.foundWords.push(word);
 
         const foundDiv = document.getElementById('foundWords');
-        foundDiv.innerHTML = Array.from(this.foundWords).map(w =>
+        foundDiv.innerHTML = Array.from(gameState.foundWords).map(w =>
             `<span class="word-entry">${w}&nbsp;(${calculateScore(w)})</span>`
         ).toReversed().join(', ');
 
@@ -239,13 +241,13 @@ function submitWord() {
 
 function calculateScore(word) {
     if (word.length < 4) return 0;
-
     let score = word.length === 4 ? 1 : word.length;
 
     const uniqueLetters = new Set(word.split(''));
-    if (uniqueLetters.size === this.puzzleLength) {
-        score += this.puzzleLength;
+    if (uniqueLetters.size === gameState.puzzleLength) {
+        score += gameState.puzzleLength;
     }
+
     return score;
 }
 
