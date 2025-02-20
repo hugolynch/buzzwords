@@ -204,6 +204,11 @@ function submitWord() {
         return;
     }
 
+    if (!word.includes(gameState.requiredLetter)) {
+        showDialog('Missing required letter');
+        return;
+    }
+
     if (word.length < 4) {
         showDialog('Too short');
         return;
