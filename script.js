@@ -21,17 +21,7 @@ class GameState {
             this.totalScore = parsed.totalScore;
         }
         shuffleLetters();
-
-        document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
-        document.getElementById('totalScore').textContent = gameState.totalScore;
-        document.getElementById('maxScore').textContent = updateScoreDisplay();
-        document.getElementById('foundCount').textContent = gameState.foundWords.length;
-        document.getElementById('totalWords').textContent = gameState.validWords.length;
-
-        const foundDiv = document.getElementById('foundWords');
-        foundDiv.innerHTML = Array.from(gameState.foundWords).map(w =>
-            `<span class="word-entry">${w}&nbsp;(${calculateScore(w)})</span>`
-        ).toReversed().join(', ');
+        this.render();
 
         return saved;
     }
@@ -48,6 +38,18 @@ class GameState {
         console.clear();
         console.log('buzzwords:', getPangrams(this.validWords, this.puzzleLength));
         console.log('valid words:', this.validWords);
+    }
+
+    render() {
+        document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
+        document.getElementById('totalScore').textContent = gameState.totalScore;
+        document.getElementById('maxScore').textContent = updateScoreDisplay();
+        document.getElementById('foundCount').textContent = gameState.foundWords.length;
+        document.getElementById('totalWords').textContent = gameState.validWords.length;
+
+        document.getElementById('foundWords').innerHTML = Array.from(gameState.foundWords).map(w =>
+            `<span class="word-entry">${w}&nbsp;(${calculateScore(w)})</span>`
+        ).toReversed().join(', ');
     }
 }
 
@@ -87,8 +89,11 @@ async function init(gameState) {
     gameState.validWords = validWords;
     gameState.puzzleLetters = letters;
     gameState.puzzleLength = puzzleLength;
+    gameState.foundWords = [];
+    gameState.totalScore = 0;
     gameState.saveGameState();
     shuffleLetters();
+    gameState.render();
 }
 
 function getPuzzleLength() {
