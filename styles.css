@@ -33,6 +33,7 @@ footer, header, hgroup, menu, nav, section {
 
 body {
 	line-height: 1;
+    flex-grow: 1;
 }
 
 ol, ul {
@@ -66,6 +67,8 @@ table {
 html {
     font-family: 'Inter', -apple-system, system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 62.5%;
+    display: flex;
+    min-height: 100vh;
 }
 
 .mono {
@@ -77,7 +80,7 @@ body {
     margin: 16px;
     display: flex;
     flex-direction: column;
-    gap: 96px;
+    /* gap: 96px; */
 }
 
 nav {
@@ -139,6 +142,7 @@ button, .title {
 #game {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     gap: 16px;
 }
 
@@ -308,4 +312,61 @@ button, .title {
 #scoreBar-inner {
     height: 10px;
     background-color: #E8C68E;
+    border-radius: 1px 0 0 1px;
+}
+
+@media (max-width: 400px) {
+    #letters {
+        display: grid;
+    }
+
+    #letters>span:nth-child(1) {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 0;
+        grid-row-end: 1;
+        justify-self: center;
+    }
+
+    #letters>span:nth-child(2) {
+        grid-column-start: 2;
+        grid-column-end: 3;
+        grid-row-start: 0;
+        grid-row-end: 1;
+    }
+
+    #letters>span:nth-child(3) {
+        grid-column-start: 0;
+        grid-column-end: 1;
+        grid-row-start: 1;
+        grid-row-end: 2;
+    }
+
+    #letters>span:nth-child(4) {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 1;
+        grid-row-end: 2;
+    }
+
+    #letters>span:nth-child(5) {
+        grid-column-start: 2;
+        grid-column-end: 3;
+        grid-row-start: 1;
+        grid-row-end: 2;
+    }
+
+    #letters>span:nth-child(6) {
+        grid-column-start: 0;
+        grid-column-end: 1;
+        grid-row-start: 2;
+        grid-row-end: 3;
+    }
+
+    #letters>span:nth-child(7) {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 2;
+        grid-row-end: 3;
+    }
 }
