@@ -64,6 +64,20 @@ table {
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: "Open Runde";
+    src: url('fonts/OpenRunde-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Open Runde";
+    src: url('fonts/OpenRunde-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
 html {
     font-family: 'Inter', -apple-system, system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 62.5%;
@@ -184,6 +198,8 @@ button, .title {
     overflow-x: auto;
     display: flex;
     gap: 12px;
+    font-family: 'Open Runde';
+    
 
     &:focus {
         outline: none;
@@ -213,6 +229,7 @@ button, .title {
     cursor: pointer;
     transition: transform 0.1s;
     padding: 0;
+    font-family: 'Open Runde';
 
     &:hover {
         transform: scale(1.1);
@@ -408,4 +425,25 @@ a {
             max-height: 50px;
         }
     }
+}
+
+/* .help {
+    &>div {
+        display: none;
+    }
+}
+
+
+.help:hover {
+    &>div {
+        display: block;
+    }
+} */
+
+.helpText {
+    display: none;
+}
+
+.help:hover+.helpText {
+    display: block;
 }
