@@ -27,17 +27,20 @@ class GameState {
     }
 
     saveGameState() {
+        console.log("saveGameState called!");
         localStorage.setItem(this.gameStateKey, JSON.stringify({
             requiredLetter: this.requiredLetter,
             validWords: this.validWords,
-            foundWords: this.foundWords,
+            foundWords: Array.from(this.foundWords),
             puzzleLetters: this.puzzleLetters,
             puzzleLength: this.puzzleLength,
             totalScore: this.totalScore,
         }));
-        console.clear();
-        console.log('buzzwords:', getPangrams(this.validWords, this.puzzleLength));
-        console.log('valid words:', this.validWords);
+
+        // Generate and update URL hash
+        const hash = generatePuzzleHash(this);
+        console.log("Hash before setting window.location.hash:", hash);
+        window.location.hash = hash; // Set the hash part of the URL
     }
 
     render() {
@@ -55,13 +58,23 @@ class GameState {
 
 function load() {
     gameState = new GameState();
-    currentGame = gameState.loadGameState();
+    const loadedStateFromHash = loadGameStateFromHash(); // Try loading from hash first
 
-    if (! currentGame) {
-        init(gameState);
-    } else {
-        gameState.saveGameState();
+    if (loadedStateFromHash) {
+        // Game state loaded from hash, use it
+        gameState = loadedStateFromHash;
+        gameState.saveGameState(); // Save to localStorage as well, if you want to persist it
     }
+    else {
+        const saved = gameState.loadGameState(); // Fallback to loading from localStorage
+        if (!saved) {
+            init(gameState); // If no saved state or hash, initialize a new game
+        } else {
+            gameState.saveGameState(); // Potentially redundant save, review logic
+        }
+    }
+    shuffleLetters();
+    gameState.render();
 }
 
 async function init(gameState) {
@@ -398,4 +411,44 @@ async function seededPuzzle(gameState) {
     } else {
         alert("Seeded puzzle creation cancelled.");
     }
+}
+
+function generatePuzzleHash(gameState) {
+    console.log("generatePuzzleHash called!");
+    const puzzleDefinition = {
+        puzzleLetters: gameState.puzzleLetters,
+        requiredLetter: gameState.requiredLetter,
+        puzzleLength: gameState.puzzleLength,
+        validWords: gameState.validWords,
+    };
+    console.log("puzzleDefinition:", puzzleDefinition);
+    const jsonString = JSON.stringify(puzzleDefinition);
+    console.log("jsonString:", jsonString);
+    const base64Hash = btoa(jsonString);
+    console.log("base64Hash:", base64Hash);
+    return base64Hash;
+}
+
+function loadGameStateFromHash() {
+    const hash = window.location.hash.substring(1);
+    console.log(hash)
+    if (hash) {
+        try {
+            const jsonString = atob(hash);
+            const puzzleDefinition = JSON.parse(jsonString);
+
+            // Create a new GameState and populate it from the hash
+            const loadedGameState = new GameState();
+            loadedGameState.puzzleLetters = puzzleDefinition.puzzleLetters;
+            loadedGameState.requiredLetter = puzzleDefinition.requiredLetter;
+            loadedGameState.puzzleLength = puzzleDefinition.puzzleLength;
+            loadedGameState.validWords = puzzleDefinition.validWords; // Assign validWords directly
+
+            return loadedGameState;
+        } catch (error) {
+            console.error("Error loading game state from hash:", error);
+            return null;
+        }
+    }
+    return null;
 }
