@@ -199,7 +199,6 @@ button, .title {
     display: flex;
     gap: 12px;
     font-family: 'Open Runde';
-    
 
     &:focus {
         outline: none;
@@ -331,6 +330,30 @@ button, .title {
     background-color: #E8C68E;
     border-radius: 1px 0 0 1px;
     margin: 1px;
+}
+
+#dots {
+    position: absolute;
+    display: flex;
+    left: 32px;
+    right: 32px;
+    margin: 0 4px;
+    justify-content: space-between;
+
+    &>div {
+        background-color: #BA8400;
+        height: 4px;
+        max-width: 4px;
+        border-radius: 2px;
+        flex-grow: 1;
+
+    }
+
+    &>:first-child {
+        background-color: #E8C68E;
+    }
+
+
 }
 
 @media (max-width: 416px) {
