@@ -27,7 +27,6 @@ class GameState {
     }
 
     saveGameState() {
-        console.log("saveGameState called!");
         localStorage.setItem(this.gameStateKey, JSON.stringify({
             requiredLetter: this.requiredLetter,
             validWords: this.validWords,
@@ -37,9 +36,12 @@ class GameState {
             totalScore: this.totalScore,
         }));
 
+        console.clear();
+        console.log('buzzwords:', getPangrams(this.validWords, this.puzzleLength));
+        console.log('valid words:', this.validWords);
+
         // Generate and update URL hash
         const hash = generatePuzzleHash(this);
-        console.log("Hash before setting window.location.hash:", hash);
         window.location.hash = hash; // Set the hash part of the URL
     }
 
@@ -414,24 +416,19 @@ async function seededPuzzle(gameState) {
 }
 
 function generatePuzzleHash(gameState) {
-    console.log("generatePuzzleHash called!");
     const puzzleDefinition = {
         puzzleLetters: gameState.puzzleLetters,
         requiredLetter: gameState.requiredLetter,
         puzzleLength: gameState.puzzleLength,
         validWords: gameState.validWords,
     };
-    console.log("puzzleDefinition:", puzzleDefinition);
     const jsonString = JSON.stringify(puzzleDefinition);
-    console.log("jsonString:", jsonString);
     const base64Hash = btoa(jsonString);
-    console.log("base64Hash:", base64Hash);
     return base64Hash;
 }
 
 function loadGameStateFromHash() {
     const hash = window.location.hash.substring(1);
-    console.log(hash)
     if (hash) {
         try {
             const jsonString = atob(hash);
