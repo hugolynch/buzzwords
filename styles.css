@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;700&display=swap');
 
-
 /* Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) */
 
 html, body, div, span, applet, object, iframe,
@@ -94,7 +93,6 @@ body {
     margin: 16px;
     display: flex;
     flex-direction: column;
-    /* gap: 96px; */
 }
 
 nav {
@@ -352,8 +350,6 @@ button, .title {
     &>:first-child {
         background-color: rgba(0, 0, 0, 0);
     }
-
-
 }
 
 @media (max-width: 416px) {
@@ -449,19 +445,6 @@ a {
         }
     }
 }
-
-/* .help {
-    &>div {
-        display: none;
-    }
-}
-
-
-.help:hover {
-    &>div {
-        display: block;
-    }
-} */
 
 .helpText {
     display: none;
