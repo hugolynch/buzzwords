@@ -310,3 +310,92 @@ const months = [
 ];
 
 document.getElementById('date').textContent = `${months[new Date().getMonth()]} ${new Date().getDate()}, ${new Date().getFullYear()}`;
+
+function customPuzzle(gameState) {
+    const wordListPrompt = prompt("Enter your custom word list, separated by commas:");
+    if (wordListPrompt) {
+        const customWordList = wordListPrompt.toLowerCase().split(',').map(word => word.trim()).filter(word => word.length >= 4);
+
+        if (customWordList.length === 0) {
+            alert("Invalid word list. Please enter at least one word of length 4 or more.");
+            return;
+        }
+
+        const puzzleLetters = [];
+        customWordList.forEach(word => {
+            for (const letter of word) {
+                if (!puzzleLetters.includes(letter)) {
+                    puzzleLetters.push(letter);
+                }
+            }
+        });
+        const requiredLetter = prompt(`Enter the required letter from these letters: ${puzzleLetters.join(', ')}:`);
+        if (!puzzleLetters.includes(requiredLetter)) {
+            alert("Invalid required letter. Please choose one of the letters in the puzzle.");
+            return;
+        }
+
+        if (puzzleLetters.size < 4 || puzzleLetters.size > 9) {
+            alert("The custom word list must contain between 4 and 9 unique letters.");
+            return;
+        }
+
+        console.log("Valid words:", customWordList);
+
+        if (customWordList.length === 0) {
+            alert("No valid words could be formed with the given word list and required letter.");
+            return;
+        }
+
+        gameState.puzzleLetters = puzzleLetters;
+        gameState.puzzleLength = gameState.puzzleLetters.length;
+        gameState.requiredLetter = requiredLetter;
+        gameState.validWords = customWordList;
+        gameState.totalScore = 0;
+        gameState.foundWords = [];
+        gameState.saveGameState();
+        shuffleLetters();
+        gameState.render();
+
+    } else {
+        alert("Custom puzzle creation cancelled.");
+    }
+}
+
+async function seededPuzzle(gameState) {
+    const letters = prompt("Enter 4-9 unique letters:");
+    if (letters) {
+        if (letters.length < 4 || letters.length > 9 || (new Set(letters)).size !== letters.length) {
+            alert("Invalid input. Please enter 4-9 unique letters.");
+            return;
+        }
+        gameState.puzzleLetters = [...new Set(letters)].sort();
+        gameState.puzzleLength = gameState.puzzleLetters.length;
+
+        const requiredLetter = prompt(`Enter the required letter from these letters: ${gameState.puzzleLetters.join(', ')}:`);
+        if (!gameState.puzzleLetters.includes(requiredLetter)) {
+            alert("Invalid required letter. Please choose one of the letters in the puzzle.");
+            return;
+        }
+
+    const response = await fetch('scrabble.txt');
+    const text = await response.text();
+    const wordList = text.toLowerCase().split('\n').map(word => word.trim()).filter(word => word.length >= 4);
+
+    const validWords = wordList.filter((word) => {
+        return word.includes(requiredLetter) &&
+            [...word].every(c => letters.includes(c));
+    });
+
+        gameState.requiredLetter = requiredLetter;
+        gameState.validWords = validWords;
+        gameState.totalScore = 0;
+        gameState.foundWords = [];
+        gameState.saveGameState();
+        shuffleLetters();
+        gameState.render();
+
+    } else {
+        alert("Seeded puzzle creation cancelled.");
+    }
+}

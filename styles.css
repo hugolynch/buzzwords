@@ -350,7 +350,7 @@ button, .title {
     }
 
     &>:first-child {
-        background-color: #E8C68E;
+        background-color: rgba(0, 0, 0, 0);
     }
 
 
