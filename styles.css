@@ -328,6 +328,9 @@ button, .title {
     background-color: #E8C68E;
     border-radius: 1px 0 0 1px;
     margin: 1px;
+
+    transition-property: width;
+    transition-duration: .3s;
 }
 
 #dots {
