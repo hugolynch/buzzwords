@@ -342,7 +342,7 @@ button, .title {
     justify-content: space-between;
 
     &>div {
-        background-color: #BA8400;
+        background-color: #F9F2E7;
         height: 4px;
         max-width: 4px;
         border-radius: 2px;
@@ -455,4 +455,9 @@ a {
 
 .help:hover+.helpText {
     display: block;
+}
+
+#rank {
+    color: #DDA846;
+    margin-left: 8px;
 }

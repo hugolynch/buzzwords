@@ -48,6 +48,7 @@ class GameState {
         document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
         document.getElementById('totalScore').textContent = gameState.totalScore;
         document.getElementById('maxScore').textContent = updateScoreDisplay();
+        document.getElementById('rank').textContent = findRank(gameState);
         document.getElementById('foundCount').textContent = gameState.foundWords.length;
         document.getElementById('totalWords').textContent = gameState.validWords.length;
 
@@ -248,13 +249,13 @@ function submitWord() {
 
         document.getElementById('wordInput').innerHTML = "";
 
-        document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
-        document.getElementById('totalScore').textContent = gameState.totalScore;
-        document.getElementById('maxScore').textContent = updateScoreDisplay();
-        document.getElementById('foundCount').textContent = gameState.foundWords.length;
-        document.getElementById('totalWords').textContent = gameState.validWords.length;
-        
-        gameState.saveGameState()
+        // document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
+        // document.getElementById('totalScore').textContent = gameState.totalScore;
+        // document.getElementById('maxScore').textContent = updateScoreDisplay();
+        // document.getElementById('foundCount').textContent = gameState.foundWords.length;
+        // document.getElementById('totalWords').textContent = gameState.validWords.length;
+        gameState.render();
+        gameState.saveGameState();
         console.log(gameState.foundWords);
 
     } else {
@@ -446,3 +447,26 @@ function loadGameStateFromHash() {
     }
     return null;
 }
+
+function findRank(gameState) {
+    const current = gameState.totalScore;
+    const max = updateScoreDisplay(gameState);
+
+    let currentRank = "";
+    const ranks = [
+        {"value": 0, "rank": "Egg"},
+        {"value": 0.2, "rank": " Larva"},
+        {"value": 0.4, "rank": " Pupa"},
+        {"value": 0.6, "rank": " Drone"},
+        {"value": 0.8, "rank": " Worker"},
+        {"value": 1, "rank": " Queen Bee"},
+    ];
+
+    for (let step = 0; step < ranks.length; step++) {
+        if (current/max >= ranks[step].value) {
+            currentRank = ranks[step].rank;
+        }
+    }
+
+    return currentRank;
+};
