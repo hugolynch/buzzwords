@@ -342,7 +342,7 @@ button, .title {
     justify-content: space-between;
 
     &>div {
-        background-color: #F9F2E7;
+        background-color: #DDA846;
         height: 4px;
         max-width: 4px;
         border-radius: 2px;
