@@ -112,6 +112,7 @@ nav {
 }
 
 button, .title {
+    font-family: 'Inter', -apple-system, system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     border-radius: 6px;
     border: 1px solid #C9CAD6;
     background: white;
@@ -182,7 +183,7 @@ button, .title {
 }
 
 #dialogScore {
-    color: #EF9E58;
+    color: #FA9774;
     font-size: 1.6rem;
     font-weight: 600;
 }
@@ -451,10 +452,47 @@ a {
 
 .helpText {
     display: none;
+    position: fixed;
+    border: 1px solid #C9CAD6;
+    background-color: #FAFBFE;
+    top: 58px;
+    left: 0;
+    margin: 0 16px;
+    padding: 24px;
+    border-radius: 6px;
+    flex-direction: column;
+    gap: 16px;
+    line-height: 2rem;
+    font-size: 1.4rem;
+    
 }
 
 .help:hover+.helpText {
-    display: block;
+    display: flex;
+}
+
+.exampleLetters {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &>div {
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        background-color: white;
+        border: 1px solid #C9CAD6;
+        border-radius: 4px;
+    }
+
+    &>.required {
+        background-color: #F9F2E7;
+        border: 1px solid #DDA846;
+    }
+}
+.exampleScore {
+    color: #DDA846;
+    margin-left: 4px;
 }
 
 #rank {
@@ -466,3 +504,7 @@ a {
     flex-direction: column;
     border: 1px solid red;
 } */
+
+ #date {
+    margin: 0;
+ }

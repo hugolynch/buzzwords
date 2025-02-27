@@ -40,8 +40,12 @@ class GameState {
         console.log('buzzwords:', getPangrams(this.validWords, this.puzzleLength));
         console.log('valid words:', this.validWords);
 
+        console.log(generateLetterDistributionGrid(this));
+
         const hash = generatePuzzleHash(this);
         window.location.hash = hash;
+
+        generateLetterDistributionGrid(this);
     }
 
     render() {
@@ -326,9 +330,23 @@ const months = [
 document.getElementById('date').textContent = `${months[new Date().getMonth()]} ${new Date().getDate()}, ${new Date().getFullYear()}`;
 
 function customPuzzle(gameState) {
-    const wordListPrompt = prompt("Enter your custom word list, separated by commas:");
+    const wordListPrompt = prompt("Enter your custom word list as a JavaScript array");
     if (wordListPrompt) {
-        const customWordList = wordListPrompt.toLowerCase().split(',').map(word => word.trim()).filter(word => word.length >= 4);
+        let customWordList;
+        try {
+            customWordList = JSON.parse(wordListPrompt.toLowerCase());
+
+            
+            if (!Array.isArray(customWordList)) {
+                alert("Invalid input. Please enter a valid JavaScript array of words.");
+                return;
+            }
+            customWordList = customWordList.map(word => word.trim()).filter(word => word.length >= 4);
+        } catch (e) {
+            alert("Invalid array format. Please use valid JavaScript array syntax (e.g., [\"word1\", \"word2\", \"word3\"]).");
+            return;
+        }
+
 
         if (customWordList.length === 0) {
             alert("Invalid word list. Please enter at least one word of length 4 or more.");
@@ -470,3 +488,111 @@ function findRank(gameState) {
 
     return currentRank;
 };
+
+function generateLetterDistributionGrid(gameState) {
+    const distribution = {};
+    const startingLetters = new Set();
+    const wordLengths = new Set();
+    let bingo = true;
+
+    // Initialize distribution object
+    for (const word of gameState.validWords) {
+        const startLetter = word[0].toUpperCase();
+        const length = word.length;
+        startingLetters.add(startLetter);
+        wordLengths.add(length);
+        if (!distribution[startLetter]) {
+            distribution[startLetter] = {};
+        }
+        distribution[startLetter][length] = (distribution[startLetter][length] || 0) + 1;
+    }
+
+    if (startingLetters.size !== gameState.puzzleLetters.length) {
+        bingo = false;
+    }
+
+    const sortedLetters = Array.from(startingLetters).sort();
+    const sortedLengths = Array.from(wordLengths).sort((a, b) => a - b);
+
+    let gridString = '\t'; // Initial spacing for alignment
+
+    // Header row (lengths)
+    for (const length of sortedLengths) {
+        gridString += `${length}\t`;
+    }
+    gridString += 'tot\n'; // Total column header
+
+    let totalWordsOverall = 0;
+
+    // Letter rows
+    for (const letter of sortedLetters) {
+        gridString += `${letter}\t`;
+        let totalWordsPerLetter = 0;
+        for (const length of sortedLengths) {
+            const count = distribution[letter][length] || '-';
+            gridString += `${count}\t`;
+            if (typeof count === 'number') {
+                totalWordsPerLetter += count;
+            }
+        }
+        gridString += `${totalWordsPerLetter}\n`; // Total for the letter row
+        totalWordsOverall += totalWordsPerLetter;
+    }
+
+    // Total row
+    gridString += 'tot\t';
+    let totalWordsPerLength = {};
+    for (const length of sortedLengths) {
+        totalWordsPerLength[length] = 0;
+        for (const letter of sortedLetters) {
+            if (distribution[letter] && distribution[letter][length]) {
+                totalWordsPerLength[length] += distribution[letter][length];
+            }
+        }
+        gridString += `${totalWordsPerLength[length]}\t`;
+    }
+    gridString += `${totalWordsOverall}\n`; // Grand total
+
+    if (bingo) {
+        gridString = "BINGO!\n" + gridString;
+    }
+    return gridString;
+}
+
+function dailyPuzzle(gameState) {
+    const puzzle = [
+        {
+            "answers": ["calorific", "acacia", "acai", "arco", "cacao", "calf", "calico", "call", "calla", "callaloo", "caloric", "carol", "ciao", "cilia", "circa", "cirri", "cliff", "cloaca", "coal", "coca", "cocci", "cocoa", "coif", "coil", "coir", "cola", "colic", "collar", "color", "colorific", "cool", "coral", "corolla", "corral", "croc", "croci", "facial", "farcical", "focaccia", "focal", "foci", "folic", "frolic", "iliac", "laic", "laical", "lilac", "local", "loci", "loco", "official", "orca", "racial", "railcar", "rococo"],
+            "centerLetter": ["c"]
+        }
+    ];
+
+    const wordList = puzzle[0].answers;
+    const requiredLetter = puzzle[0].centerLetter[0];
+
+    if (!wordList || wordList.length === 0) {
+        alert("No words found in the puzzle data.");
+        return;
+    }
+
+    const puzzleLetters = [];
+    wordList.forEach(word => {
+        for (const letter of word) {
+            if (!puzzleLetters.includes(letter)) {
+                puzzleLetters.push(letter);
+            }
+        }
+    });
+
+    const validWords = wordList.filter(word => word.includes(requiredLetter));
+
+    gameState.puzzleLetters = puzzleLetters;
+    gameState.puzzleLength = gameState.puzzleLetters.length;
+    gameState.requiredLetter = requiredLetter;
+    gameState.validWords = wordList;
+    gameState.totalScore = 0;
+    gameState.foundWords = [];
+    gameState.saveGameState();
+    shuffleLetters();
+    gameState.render();
+}

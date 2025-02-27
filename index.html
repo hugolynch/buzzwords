@@ -14,18 +14,36 @@
             <button><a href="home.html"><img src="img/back.svg"></a></button>
             <div class="title">Buzzwords</div>
             <button class="help"><img src="img/help.svg"></button>
-            <div class="helpText">https://en.wikipedia.org/wiki/Word_polygon</div>
+            <div class="helpText">
+                    <p>In <i>Buzzwords</i>, the goal is to score as many points as possible by creating valid words using a set of 7 provided letters.</p>
+                <div class="exampleLetters">
+                    <div>R</div>
+                    <div>Z</div>
+                    <div class="required">B</div>
+                    <div>D</div>
+                    <div>W</div>
+                    <div>U</div>
+                    <div>O</div>
+                </div>
+                <p>One of these letters is highlighted and must be included in every word you form. The remaining 6 letters are optional and can be used as many times as you’d like, or not at all. Words must be at least 4 letters long.</p>
+                <p>Words are scored based on their length, with 1 point awarded for each letter, except for 4-letter words, which are only worth 1 point total. Additionally, if you create a word that uses all 7 letters at least once (called a "Buzzword"), you earn an extra 7 bonus points on top of the base score. For example, a 9-letter Buzzword would be worth 9 points plus 7 bonus points, totalling 16 points.</p>
+                <div>WOOD<span class="exampleScore">+1</span></div>
+                <div>BROOD<span class="exampleScore">+5</span></div>
+                <div>BUZZWORD<span class="exampleScore">+15</span></div>
+                <p>Can you climb the ranks and claim the title of<span class="exampleScore">Queen Bee</span>?</p>
+            </div>
             <div class="spacer"></div>
             <button><img src="img/account.svg"><span>Hugo Lynch</span><img src="img/dropdown.svg"></div></button>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
             <button><img src="img/puzzle.svg"><span>Daily Puzzle</span><img src="img/dropdown.svg"></button>
             <button><img src="img/date.svg"><span id="date"></span><img src="img/dropdown.svg"></div></button>
-        </div>
+        </div> -->
 
         <div class="row">
-            <button class="accent" onclick="init(gameState)">New Game</button>
+            <button class="accent" onclick="dailyPuzzle(gameState)">Daily Puzzle for&nbsp<span id="date"></span></button>
+            <button onclick="init(gameState)">Random Puzzle</button>
             <button onclick="customPuzzle(gameState)">Custom Puzzle</button>
             <button onclick="seededPuzzle(gameState)">Seeded Puzzle</button>
         </div>
@@ -67,8 +85,8 @@
             <div id="scoreBar-inner"></div>
         </div>
     </div>
-    <div class="row" id="rules">
-        <!-- <h3>Rules</h3>
+    <!-- <div class="row" id="rules">
+        <h3>Rules</h3>
         <p>In <i>Buzzwords</i>, the goal is to score as many points as possible by creating valid words using a set of 7 provided letters.</p>
         <div>
             <span class="required">B</span>
