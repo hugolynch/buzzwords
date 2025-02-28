@@ -307,23 +307,6 @@ function updateScoreDisplay() {
     return totalMaxScore;
 }
 
-const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-];
-
-document.getElementById('date').textContent = `${months[new Date().getMonth()]} ${new Date().getDate()}, ${new Date().getFullYear()}`;
-
 function customPuzzle(gameState) {
     const wordListPrompt = prompt("Enter your custom word list as a JavaScript array");
     if (wordListPrompt) {
