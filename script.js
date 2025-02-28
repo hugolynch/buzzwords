@@ -147,13 +147,6 @@ function getPangrams(validWords, puzzleLength) {
 
 load();
 
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        submitWord();
-    }
-}
-
 function addLetter(letter) {
     const input = document.getElementById('wordInput');
     const span = document.createElement('span');
@@ -168,7 +161,14 @@ function removeLastLetter() {
     placeCaretAtEnd(input);
 }
 
-document.getElementById('wordInput').addEventListener('keydown', handleKeyPress);
+document.addEventListener('keydown', (event) => {
+    const input = document.getElementById('wordInput');
+    if (event.key === 'Enter') {
+        submitWord();
+    } else {
+        input.focus();
+    }
+});
 
 document.getElementById('wordInput').addEventListener('input', function (e) {
     const text = e.target.textContent.toLowerCase().replace(/[^a-z]/g, ""); 
