@@ -451,7 +451,7 @@ function loadGameStateFromHash() {
             loadedGameState.requiredLetter = puzzleDefinition.requiredLetter;
             loadedGameState.puzzleLength = puzzleDefinition.puzzleLength;
             loadedGameState.validWords = puzzleDefinition.validWords;
-            window.history.replaceState(null, '', window.location.origin)
+            window.history.replaceState(null, '', window.location.origin + window.location.pathname);
             return loadedGameState;
         } catch (error) {
             console.error("Error loading game state from hash:", error);
@@ -553,42 +553,6 @@ function generateLetterDistributionGrid(gameState) {
         gridString = "BINGO!\n" + gridString;
     }
     return gridString;
-}
-
-function dailyPuzzle(gameState) {
-    const puzzle = [
-        {
-            "answers": ["calorific", "acacia", "acai", "arco", "cacao", "calf", "calico", "call", "calla", "callaloo", "caloric", "carol", "ciao", "cilia", "circa", "cirri", "cliff", "cloaca", "coal", "coca", "cocci", "cocoa", "coif", "coil", "coir", "cola", "colic", "collar", "color", "colorific", "cool", "coral", "corolla", "corral", "croc", "croci", "facial", "farcical", "focaccia", "focal", "foci", "folic", "frolic", "iliac", "laic", "laical", "lilac", "local", "loci", "loco", "official", "orca", "racial", "railcar", "rococo"],
-            "centerLetter": ["c"]
-        }
-    ];
-
-    const wordList = puzzle[0].answers;
-    const requiredLetter = puzzle[0].centerLetter[0];
-
-    if (!wordList || wordList.length === 0) {
-        alert("No words found in the puzzle data.");
-        return;
-    }
-
-    const puzzleLetters = [];
-    wordList.forEach(word => {
-        for (const letter of word) {
-            if (!puzzleLetters.includes(letter)) {
-                puzzleLetters.push(letter);
-            }
-        }
-    });
-
-    gameState.puzzleLetters = puzzleLetters;
-    gameState.puzzleLength = gameState.puzzleLetters.length;
-    gameState.requiredLetter = requiredLetter;
-    gameState.validWords = wordList;
-    gameState.totalScore = 0;
-    gameState.foundWords = [];
-    gameState.saveGameState();
-    shuffleLetters();
-    gameState.render();
 }
 
 function copyURL(gameState) {
