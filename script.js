@@ -593,7 +593,7 @@ function dailyPuzzle(gameState) {
 
 function copyURL(gameState) {
     const puzzleHash = generatePuzzleHash(gameState);
-    navigator.clipboard.writeText(window.origin + "#" + puzzleHash);
+    navigator.clipboard.writeText(window.location.origin + window.location.pathname + "#" + puzzleHash);
 
     document.getElementById('share').textContent = "Copied to Clipboard ✅";
 
