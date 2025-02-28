@@ -41,10 +41,6 @@ class GameState {
         console.log('valid words:', this.validWords);
 
         console.log(generateLetterDistributionGrid(this));
-
-        const hash = generatePuzzleHash(this);
-        window.location.hash = hash;
-
         generateLetterDistributionGrid(this);
     }
 
@@ -69,8 +65,7 @@ function load() {
     if (loadedStateFromHash) {
         gameState = loadedStateFromHash;
         gameState.saveGameState();
-    }
-    else {
+    } else {
         const saved = gameState.loadGameState();
         if (!saved) {
             init(gameState);
@@ -456,13 +451,14 @@ function loadGameStateFromHash() {
             loadedGameState.requiredLetter = puzzleDefinition.requiredLetter;
             loadedGameState.puzzleLength = puzzleDefinition.puzzleLength;
             loadedGameState.validWords = puzzleDefinition.validWords;
-
+            window.history.replaceState(null, '', window.location.origin)
             return loadedGameState;
         } catch (error) {
             console.error("Error loading game state from hash:", error);
             return null;
         }
     }
+    
     return null;
 }
 
@@ -487,7 +483,7 @@ function findRank(gameState) {
     }
 
     return currentRank;
-};
+}
 
 function generateLetterDistributionGrid(gameState) {
     const distribution = {};
@@ -520,7 +516,7 @@ function generateLetterDistributionGrid(gameState) {
     for (const length of sortedLengths) {
         gridString += `${length}\t`;
     }
-    gridString += 'tot\n'; // Total column header
+    gridString += 'Σ\n'; // Total column header
 
     let totalWordsOverall = 0;
 
@@ -540,7 +536,7 @@ function generateLetterDistributionGrid(gameState) {
     }
 
     // Total row
-    gridString += 'tot\t';
+    gridString += 'Σ\t';
     let totalWordsPerLength = {};
     for (const length of sortedLengths) {
         totalWordsPerLength[length] = 0;
@@ -593,4 +589,15 @@ function dailyPuzzle(gameState) {
     gameState.saveGameState();
     shuffleLetters();
     gameState.render();
+}
+
+function copyURL(gameState) {
+    const puzzleHash = generatePuzzleHash(gameState);
+    navigator.clipboard.writeText(window.origin + "#" + puzzleHash);
+
+    document.getElementById('share').textContent = "Copied to Clipboard ✅";
+
+  setTimeout(() => {
+    document.getElementById('share').textContent = 'Copy Puzzle';
+  }, 2000);
 }
