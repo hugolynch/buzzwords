@@ -584,8 +584,6 @@ function dailyPuzzle(gameState) {
         }
     });
 
-    const validWords = wordList.filter(word => word.includes(requiredLetter));
-
     gameState.puzzleLetters = puzzleLetters;
     gameState.puzzleLength = gameState.puzzleLetters.length;
     gameState.requiredLetter = requiredLetter;
