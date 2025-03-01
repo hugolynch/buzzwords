@@ -212,6 +212,8 @@ function submitWord() {
     const invalidLetters = [...word].filter(c => !gameState.puzzleLetters.includes(c));
     if (!word) return;
 
+    document.getElementById('wordInput').innerHTML = "";
+
     if (invalidLetters.length > 0) {
         showDialog('Invalid letters');
         return;
@@ -245,14 +247,6 @@ function submitWord() {
         showDialog("Nice!", false);
         showDialogScore(wordScore);
 
-
-        document.getElementById('wordInput').innerHTML = "";
-
-        // document.getElementById('scoreBar-inner').style.width = (gameState.totalScore / updateScoreDisplay() * 100) + "%";
-        // document.getElementById('totalScore').textContent = gameState.totalScore;
-        // document.getElementById('maxScore').textContent = updateScoreDisplay();
-        // document.getElementById('foundCount').textContent = gameState.foundWords.length;
-        // document.getElementById('totalWords').textContent = gameState.validWords.length;
         gameState.render();
         gameState.saveGameState();
         console.log(gameState.foundWords);
@@ -281,10 +275,6 @@ function showDialog(message, clear = true) {
 
     setTimeout(() => {
         dialog.style.display = 'none';
-        const input = document.getElementById('wordInput')
-        if (clear) {
-            input.innerHTML = '';
-        }
     }, 1000);
 }
 

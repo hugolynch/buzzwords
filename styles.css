@@ -195,6 +195,7 @@ button, .title {
     margin: 0 auto 32px;
     max-width: 90vh;
     overflow-x: auto;
+    overflow-y: hidden;
     letter-spacing: 1rem;
     font-family: 'Open Runde';
     caret-color: #DDA846;
