@@ -1,7 +1,7 @@
 {
-  "name": "buzzwords",
-  "short_name": "buzzwords",
-  "start_url": "./",
+  "name": "Buzzwords",
+  "short_name": "Buzzwords",
+  "start_url": "/buzzwords",
   "display": "standalone",
   "background_color": "#FAFBFE",
   "theme_color": "#DDA846",
