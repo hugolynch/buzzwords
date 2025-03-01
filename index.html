@@ -16,6 +16,8 @@
         <div class="row">
             <button><img src="img/back.svg"></button>
             <div class="title">Buzzwords</div>
+            <div class="spacer"></div>
+
             <button class="help"><img src="img/help.svg"></button>
             <div class="helpText">
                     <p>In <i>Buzzwords</i>, the goal is to score as many points as possible by creating valid words using a set of 7 provided letters.</p>
@@ -35,8 +37,7 @@
                 <div>BUZZWORD<span class="exampleScore">+15</span></div>
                 <p>Can you climb the ranks and claim the title of<span class="exampleScore">Queen Bee</span>?</p>
             </div>
-            <div class="spacer"></div>
-            <button><img src="img/account.svg"><span>Hugo Lynch</span><img src="img/dropdown.svg"></div></button>
+            <button><img src="img/account.svg"><img src="img/dropdown.svg"></div></button>
         </div>
 
         <!-- <div class="row">
@@ -45,9 +46,18 @@
         </div> -->
 
         <div class="row">
-            <button onclick="init(gameState)">Random Puzzle</button>
-            <button onclick="customPuzzle(gameState)">Custom Puzzle</button>
-            <button onclick="seededPuzzle(gameState)">Seeded Puzzle</button>
+            <ul>
+                <li>
+                    <button>New Puzzle<img src="img/dropdown.svg"></button>
+                    <div class="dropdown">
+                        <ul>
+                            <li><button onclick="init(gameState)">Random Puzzle</button></li>
+                            <li><button onclick="customPuzzle(gameState)">Custom Puzzle</button></li>
+                            <li><button onclick="seededPuzzle(gameState)">Seeded Puzzle</button></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
             <div class="spacer"></div>
             <button id="share" onclick="copyURL(gameState)">Copy Puzzle</button>
         </div>
