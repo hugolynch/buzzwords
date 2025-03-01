@@ -190,19 +190,23 @@ button, .title {
 
 #wordInput {
     font-size: 4.4rem;
-    justify-content: center;    
     text-transform: uppercase;
-    padding-bottom: 32px;
     text-align: center;
+    margin: 0 auto 32px;
+    max-width: 90vh;
     overflow-x: auto;
-    display: flex;
-    gap: 12px;
+    letter-spacing: 1rem;
     font-family: 'Open Runde';
+    caret-color: #DDA846;
+    min-width: 5px;
+    white-space: nowrap;
 
     &:focus {
         outline: none;
     }
 }
+
+
 
 .invalid-letter {
     color: #C9CAD6;
@@ -496,7 +500,7 @@ a {
 }
 
 #rank {
-    color: #DDA846;
+    color: #BA8400;
     margin-left: 8px;
 }
 
