@@ -189,7 +189,9 @@ function placeCaretAtEnd(el) {
 function setInputText(input, text) {
     const newText = text.split('').map(letter => {
         const isValid = gameState.puzzleLetters.includes(letter);
-        return `<span class="${isValid ? '' : 'invalid-letter'}">${letter}</span>`;
+        const isRequired = gameState.requiredLetter.includes(letter);
+        console.log(isValid, isRequired);
+        return `<span class="${isValid ? (isRequired ? 'required-letter' : '') : 'invalid-letter'}">${letter}</span>`;
     }).join('');
 
     input.innerHTML = newText;
@@ -250,6 +252,7 @@ function submitWord() {
         ).toReversed().join(', ');
 
         showDialog("Nice!", false);
+        startParticleEffect(wordScore);
         showDialogScore(wordScore);
 
         gameState.render();
@@ -542,4 +545,64 @@ function copyURL(gameState) {
   setTimeout(() => {
     document.getElementById('share').textContent = 'Copy Puzzle';
   }, 2000);
+}
+
+function startParticleEffect(score) {
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray = [];
+    const numberOfParticles = 50;
+    const colors = ['#DDA846', '#E8C68E', '#F9F2E7']; // Colors from your theme
+
+    for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle(canvas.width / 2, (canvas.height / 2) - 96, colors));
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw(ctx);
+        }
+        particlesArray = particlesArray.filter(particle => particle.opacity > 0); // Remove faded particles
+        if (particlesArray.length > 0) {
+            requestAnimationFrame(animateParticles);
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas one final time
+        }
+    }
+
+    animateParticles();
+}
+
+class Particle {
+    constructor(x, y, colors) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 5 + 1;
+        this.speedX = Math.random() * 3 - 1.5;
+        this.speedY = Math.random() * 3 - 1.5;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.opacity = 1;
+        this.fadeSpeed = 0.02; // Speed at which particles fade out
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.opacity > 0) {
+            this.opacity -= this.fadeSpeed;
+        }
+    }
+    draw(ctx) {
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1; // Reset alpha for other drawings
+    }
 }
