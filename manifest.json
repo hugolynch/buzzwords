@@ -2,6 +2,7 @@
   "name": "Buzzwords",
   "short_name": "Buzzwords",
   "start_url": "./",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#FAFBFE",
   "theme_color": "#DDA846",
