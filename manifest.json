@@ -1,14 +1,14 @@
 {
   "name": "Buzzwords",
   "short_name": "Buzzwords",
-  "start_url": ".",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#FAFBFE",
   "theme_color": "#DDA846",
   "icons": [
     {
       "src": "favicon.svg",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ]
 }
