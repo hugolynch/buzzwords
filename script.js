@@ -194,12 +194,17 @@ function setInputText(input, text) {
 
     input.innerHTML = newText;
 }
+
 function shuffleLetters() {
-    const shuffled = [...gameState.puzzleLetters];
+    let shuffled = gameState.puzzleLetters.filter(letter => letter !== gameState.requiredLetter);
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+
+    const middleIndex = Math.floor(gameState.puzzleLetters.length / 2);
+    shuffled.splice(middleIndex, 0, gameState.requiredLetter);
+
     gameState.puzzleLetters = shuffled;
     displayLetters();
 }
