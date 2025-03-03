@@ -470,7 +470,7 @@ function generateLetterDistributionGrid(gameState) {
     const distribution = {};
     const startingLetters = new Set();
     const wordLengths = new Set();
-    let bingo = true;
+    let bingo = false;
 
     // Initialize distribution object
     for (const word of gameState.validWords) {
@@ -484,18 +484,36 @@ function generateLetterDistributionGrid(gameState) {
         distribution[startLetter][length] = (distribution[startLetter][length] || 0) + 1;
     }
 
-    if (startingLetters.size !== gameState.puzzleLetters.length) {
-        bingo = false;
+    if (startingLetters.size === gameState.puzzleLetters.length) {
+        bingo = true;
     }
 
     const sortedLetters = Array.from(startingLetters).sort();
     const sortedLengths = Array.from(wordLengths).sort((a, b) => a - b);
 
+    // Calculate column widths
+    const columnWidths = {};
+    for (const length of sortedLengths) {
+        let maxWidth = String(length).length;
+        for (const letter of sortedLetters) {
+            const count = distribution[letter]?.[length] || '-';
+            maxWidth = Math.max(maxWidth, String(count).length);
+        }
+        let totalWordsPerLength = 0;
+        for (const letter of sortedLetters) {
+            if (distribution[letter] && distribution[letter][length]) {
+                totalWordsPerLength += distribution[letter][length];
+            }
+        }
+        maxWidth = Math.max(maxWidth, String(totalWordsPerLength).length);
+        columnWidths[length] = maxWidth;
+    }
+
     let gridString = '\t'; // Initial spacing for alignment
 
     // Header row (lengths)
     for (const length of sortedLengths) {
-        gridString += `${length}\t`;
+        gridString += String(length).padStart(columnWidths[length]) + '\t';
     }
     gridString += 'Σ\n'; // Total column header
 
@@ -506,8 +524,9 @@ function generateLetterDistributionGrid(gameState) {
         gridString += `${letter}\t`;
         let totalWordsPerLetter = 0;
         for (const length of sortedLengths) {
-            const count = distribution[letter][length] || '-';
-            gridString += `${count}\t`;
+            const count = distribution[letter]?.[length] || '-';
+            const displayCount = typeof count === 'number' ? String(count) : '-';
+            gridString += displayCount.padStart(columnWidths[length]) + '\t';
             if (typeof count === 'number') {
                 totalWordsPerLetter += count;
             }
@@ -526,7 +545,7 @@ function generateLetterDistributionGrid(gameState) {
                 totalWordsPerLength[length] += distribution[letter][length];
             }
         }
-        gridString += `${totalWordsPerLength[length]}\t`;
+        gridString += String(totalWordsPerLength[length]).padStart(columnWidths[length]) + '\t';
     }
     gridString += `${totalWordsOverall}\n`; // Grand total
 
