@@ -149,9 +149,7 @@ load();
 
 function addLetter(letter) {
     const input = document.getElementById('wordInput');
-    const span = document.createElement('span');
-    span.textContent = letter.toLowerCase();
-    input.appendChild(span);
+    setInputText(input, input.textContent + letter.toLowerCase());
     placeCaretAtEnd(input);
 }
 
