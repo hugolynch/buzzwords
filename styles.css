@@ -544,3 +544,7 @@ a {
     height: 100%;
     pointer-events: none; /* Make sure it doesn't interfere with clicks */
 }
+
+#typo {
+    width: 16px;
+}
