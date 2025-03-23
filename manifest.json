@@ -11,11 +11,6 @@
       "src": "img/favicon.svg",
       "sizes": "any",
       "purpose": "any"
-    },
-    {
-      "src": "img/favicon-maskable.svg",
-      "sizes": "any",
-      "purpose": "maskable"
     }
   ]
 }
